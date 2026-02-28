@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lostmon Canaã — Pokédex</title>
+<style>
+  :root {
+    --bg: #1a1600;
+    --card: #2a2200;
+    --border: #4a3c00;
+    --accent: #e8b800;
+    --gold: #f0c040;
+    --text: #e8f0f8;
+    --muted: #8aabcc;
+    --gs97r: #c8a000;
+    --kep: #c0392b;
+    --both: #9b7ec8;
+    --beta: #d4a017;
+    --canonical: #555f6e;
+    --legendary: #c0392b;
+    --spg: #2e8b57;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', Arial, sans-serif; }
+
+  header {
+    background: linear-gradient(135deg, #2a2200, #1a1600);
+    padding: 32px 40px 24px;
+    border-bottom: 2px solid var(--gold);
+  }
+  header h1 { font-size: 2.2rem; color: var(--gold); letter-spacing: 2px; }
+  header p { color: var(--muted); margin-top: 6px; font-size: 0.9rem; }
+  .stats-bar {
+    display: flex; gap: 24px; margin-top: 16px; flex-wrap: wrap;
+  }
+  .stat { background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; }
+  .stat span { color: var(--gold); font-weight: bold; font-size: 1.1rem; }
+
+  .controls {
+    background: #211b00;
+    padding: 16px 40px;
+    display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  input[type=text] {
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    padding: 8px 14px; border-radius: 8px; font-size: 0.9rem; width: 220px;
+    outline: none;
+  }
+  input[type=text]:focus { border-color: var(--accent); }
+  select {
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    padding: 8px 14px; border-radius: 8px; font-size: 0.9rem; outline: none;
+    cursor: pointer;
+  }
+  .view-toggle button {
+    background: var(--card); border: 1px solid var(--border); color: var(--muted);
+    padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem;
+  }
+  .view-toggle button.active { background: var(--accent); color: #1a1600; border-color: var(--accent); }
+
+  .legend {
+    display: flex; gap: 12px; flex-wrap: wrap; padding: 12px 40px;
+    background: #211b00; border-bottom: 1px solid var(--border);
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--muted); }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+  /* GRID VIEW */
+  #grid-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    padding: 24px 40px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s;
+    position: relative;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card .num { font-size: 0.72rem; color: var(--muted); margin-bottom: 4px; }
+  .card .sprite-wrap {
+    width: 112px; height: 112px; margin: 0 auto 10px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  /* Pokéball-style ring: top half red, bottom half white, black divider */
+  .card .sprite-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(
+      #cc0000 0deg 180deg,
+      #ffffff 180deg 360deg
+    );
+    z-index: 0;
+  }
+  /* Black center band */
+  .card .sprite-wrap::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    top: calc(50% - 3px);
+    height: 6px;
+    background: #111;
+    z-index: 1;
+  }
+  /* White inner circle (sprite background) */
+  .card .sprite-inner {
+    position: relative;
+    z-index: 2;
+    width: 74px; height: 74px; flex-shrink: 0;
+    border-radius: 50%;
+    background: #f0f0f0;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 2px #111;
+    overflow: hidden;
+  }
+  .card .sprite-inner img {
+    width: 66px; height: 66px;
+    image-rendering: pixelated;
+  }
+  .card .sprite-inner .no-sprite {
+    font-size: 1.4rem; color: #999;
+  }
+  /* Table view sprite — simpler pokeball ring */
+  td .sprite-wrap-table {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 60px; height: 60px; border-radius: 50%; position: relative;
+    background: conic-gradient(#cc0000 0deg 180deg, #ffffff 180deg 360deg);
+    box-shadow: 0 0 0 2px #111;
+  }
+  td .sprite-wrap-table::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    top: calc(50% - 2px);
+    height: 4px;
+    background: #111;
+    z-index: 1;
+  }
+  td .sprite-wrap-table .sprite-inner-table {
+    position: relative; z-index: 2;
+    width: 46px; height: 46px; border-radius: 50%;
+    background: #f0f0f0;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 2px #111;
+    overflow: hidden;
+  }
+  td .sprite-wrap-table .sprite-inner-table img {
+    width: 40px; height: 40px; image-rendering: pixelated;
+  }
+  .card .name { font-size: 0.82rem; font-weight: bold; color: var(--text); word-break: break-word; }
+  .card .evo-short { font-size: 0.7rem; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .source-badge {
+    position: absolute; top: 8px; right: 8px;
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  /* TABLE VIEW */
+  #table-view { padding: 24px 40px; display: none; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th {
+    background: #2a2200; color: var(--gold); font-weight: bold;
+    padding: 10px 14px; text-align: left; border-bottom: 2px solid var(--gold);
+    position: sticky; top: 57px;
+  }
+  td { padding: 8px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:hover td { background: rgba(232,184,0,0.05); }
+  td img { image-rendering: pixelated; width: 48px; height: 48px; }
+  .tag {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 0.72rem; font-weight: bold; white-space: nowrap;
+  }
+
+  .hidden { display: none !important; }
+
+  /* Source colors */
+  .src-gs97r   { background: rgba(91,155,213,0.2); color: #7bbfff; }
+  .src-kep     { background: rgba(106,177,135,0.2); color: #7dd4a0; }
+  .src-both    { background: rgba(155,126,200,0.2); color: #c9a8ff; }
+  .src-beta    { background: rgba(212,160,23,0.2); color: #f0c040; }
+  .src-canon   { background: rgba(85,95,110,0.2); color: #aabbcc; }
+  .src-legend  { background: rgba(192,57,43,0.2); color: #ff8070; }
+  .src-spg     { background: rgba(46,139,87,0.2); color: #5dba82; }
+
+  .dot-gs97r  { background: var(--gs97r); }
+  .dot-kep    { background: var(--kep); }
+  .dot-both   { background: var(--both); }
+  .dot-beta   { background: var(--beta); }
+  .dot-canon  { background: var(--canonical); }
+  .dot-legend { background: var(--legendary); }
+  .dot-spg    { background: var(--spg); }
+
+  .research-flag { color: #ff6b6b; font-size: 0.75rem; }
+
+  footer { text-align: center; padding: 24px; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Lostmon Canaã</h1>
+  <div class="stats-bar">
+    <div class="stat">Total: <span id="total-count">0</span></div>
+  </div>
+</header>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="🔍 Search name..." oninput="filterDex()">
+  <select id="source-filter" onchange="filterDex()">
+    <option value="">All Sources</option>
+    <option value="gs97r">GS97R</option>
+    <option value="kep">KEP</option>
+    <option value="canon">Canonical</option>
+    <option value="spg">SPG</option>
+  </select>
+  <div class="view-toggle">
+    <button id="btn-grid" class="active" onclick="setView('grid')">⊞ Grid</button>
+    <button id="btn-table" onclick="setView('table')">☰ Table</button>
+  </div>
+  <button id="btn-sprite-side" onclick="toggleSpriteSide()" style="background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:0.85rem;margin-left:auto;">🔄 Show Back</button>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot dot-gs97r"></div> GS97R</div>
+  <div class="legend-item"><div class="legend-dot dot-kep"></div> KEP</div>
+  <div class="legend-item"><div class="legend-dot dot-canon"></div> Canonical</div>
+  <div class="legend-item"><div class="legend-dot dot-spg"></div> SPG</div>
+</div>
+
+<div id="grid-view"></div>
+<div id="table-view">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th>Sprite</th><th>Name</th><th>Evolution</th><th>Source</th><th>Notes</th>
+      </tr>
+    </thead>
+    <tbody id="table-body"></tbody>
+  </table>
+</div>
+
+<footer>Lostmon Canaã — Sprites used from gold97 (SoupPotato), kep-hack (ShiraTheMogul), polishedcrystal (Rangi42) and shinpokered (jojobear13).</footer>
+
+<script>
+// GS97R: https://raw.githubusercontent.com/SoupPotato/gold97/master/gfx/pokemon/{name}/front.png
+// KEP:   https://raw.githubusercontent.com/ShiraTheMogul/kep-hack/master/gfx/pokemon/front/{name}.png
+// NOTE: KEP uses a flat front/ folder with name.png files (NOT subfolders)
+
+// OFFLINE MODE — sprites loaded from local sprites/ folder
+// Run download_sprites.sh first to populate the folder!
+
+let showBack = false;
+let currentData = [];
+
+function toggleSpriteSide() {
+  showBack = !showBack;
+  document.getElementById('btn-sprite-side').textContent = showBack ? '🔄 Show Front' : '🔄 Show Back';
+  buildGrid(currentData);
+  buildTable(currentData);
+}
+
+function nameToKey(name) {
+  return name.toLowerCase()
+    .replace('farfetch_d', 'farfetchd')
+    .replace('sirfetch_d', 'sirfetchd')
+    .replace('porygon-z',  'porygon_z')
+    .replace(/[^a-z0-9_]/g, '');
+}
+
+function spriteUrl(name, source) {
+  const n = nameToKey(name);
+  const side = showBack ? 'back' : 'front';
+  return ['sprites/' + n + '/' + side + '.png', 'sprites/' + n + '.png'];
+}
+
+function getSourceClass(source) {
+  if (source === 'both') return 'src-both';
+  if (source === 'gs97r') return 'src-gs97r';
+  if (source === 'kep') return 'src-kep';
+  if (source === 'beta') return 'src-beta';
+  if (source === 'legend') return 'src-legend';
+  if (source === 'spg') return 'src-spg';
+  return 'src-canon';
+}
+function getDotClass(source) { return 'dot-' + (source === 'spg' ? 'spg' : source); }
+
+function getSourceLabel(source) {
+  const map = { gs97r:'GS97R', kep:'KEP', both:'GS97R+KEP', beta:'Beta', canon:'Canonical', legend:'Legendary', spg:'SPG' };
+  return map[source] || source;
+}
+
+// Smart image loader with fallback
+function loadSprite(imgEl, urls, index = 0) {
+  if (index >= urls.length) {
+    // No sprite found — replace with question mark
+    const wrap = imgEl.parentElement;
+    wrap.innerHTML = '<div class="no-sprite">?</div>';
+    return;
+  }
+  imgEl.src = urls[index];
+  imgEl.onerror = () => loadSprite(imgEl, urls, index + 1);
+}
+
+const DEX = [
+  [1,  "PICHU",       "",                   "gs97r",  "Starter! Given by Prof"],
+  [2,  "PIKACHU",     "← PICHU",            "canon",  ""],
+  [3,  "RAICHU",      "← PIKACHU",          "canon",  ""],
+  [4,  "GOROCHU",     "← RAICHU",           "kep",    ""],
+  [5,  "CHIKORITA",   "",                   "canon",  "Rival 1 starter"],
+  [6,  "PETAMOLE",    "← CHIKORITA",        "gs97r",  ""],
+  [7,  "MEGANIUM",    "← PETAMOLE",         "canon",  ""],
+  [8,  "FLAMBEAR",    "",                   "gs97r",  "Rival 2 starter"],
+  [9,  "VOLBEAR",     "← FLAMBEAR",         "gs97r",  ""],
+  [10, "DYNABEAR",    "← VOLBEAR",          "gs97r",  ""],
+  [11, "CRUIZE",      "",                   "gs97r",  "Rival 3 starter"],
+  [12, "AQUALLO",     "← CRUIZE",           "gs97r",  ""],
+  [13, "AQUARIUS",    "← AQUALLO",          "gs97r",  ""],
+  [14, "GENTLARVA",   "",                   "kep",    ""],
+  [15, "PUPAL",       "← GENTLARVA",        "kep",    ""],
+  [16, "CARAPTHOR",   "← PUPAL",            "kep",    ""],
+  [17, "LEDYBA",      "",                   "canon",  ""],
+  [18, "TRIPSTAR",    "← LEDYBA",           "gs97r",  ""],
+  [19, "LEDIAN",      "← LEDYBA",           "canon",  ""],
+  [20, "SPINARAK",    "",                   "canon",  ""],
+  [21, "TUHEAD",      "← SPINARAK",         "gs97r",  ""],
+  [22, "ARIADOS",     "← SPINARAK",         "canon",  ""],
+  [23, "PARAMITE",    "",                   "gs97r",  ""],
+  [24, "PARAS",       "← PARAMITE",         "spg",  ""],
+  [25, "PARASECT",    "← PARAS",            "spg",  ""],
+  [26, "BITTYBAT",    "",                   "kep",    ""],
+  [27, "ZUBAT",       "← BITTYBAT",         "canon",  ""],
+  [28, "GOLBAT",      "← ZUBAT",            "canon",  ""],
+  [29, "CROBAT",      "← GOLBAT",           "canon",  ""],
+  [30, "CLEFFA",      "",                   "gs97r",  ""],
+  [31, "CLEFAIRY",    "← CLEFFA",           "canon",  ""],
+  [32, "CLEFABLE",    "← CLEFAIRY",         "canon",  ""],
+  [33, "IGGLYBUFF",   "",                   "gs97r",  ""],
+  [34, "JIGGLYPUFF",  "← IGGLYBUFF",        "canon",  ""],
+  [35, "WIGGLYTUFF",  "← JIGGLYPUFF",       "canon",  ""],
+  [36, "TOGEPI",      "",                   "canon",  ""],
+  [37, "TOGETIC",     "← TOGEPI",           "canon",  ""],
+  [38, "TOGEKISS",    "← TOGETIC",          "canon",  ""],
+  [208,"MAREEP",      "",                   "canon",  ""],
+  [209,"FLAFFY",      "← MAREEP",           "canon",  ""],
+  [210,"AMPHAROS",    "← FLAFFY",           "canon",  ""],
+  [211,"GASTLY",      "",                   "canon",  ""],
+  [212,"HAUNTER",     "← GASTLY",           "canon",  ""],
+  [213,"GENGAR",      "← HAUNTER",          "canon",  ""],
+  [39, "UNOWN",       "",                   "canon",  ""],
+  [40, "BELLSPROUT",  "",                   "canon",  ""],
+  [41, "WEEPINBELL",  "← BELLSPROUT",       "canon",  ""],
+  [42, "VICTREEBEL",  "← WEEPINBELL",       "canon",  ""],
+  [43, "BELMITT",     "← WEEPINBELL",       "gs97r",  ""],
+  [44, "HOPPIP",      "",                   "gs97r",  ""],
+  [45, "SKIPLOOM",    "← HOPPIP",           "gs97r",  ""],
+  [46, "JUMPLUFF",    "← SKIPLOOM",         "gs97r",  ""],
+  [47, "POLIWAG",     "",                   "canon",  ""],
+  [48, "POLIWHIRL",   "← POLIWAG",          "canon",  ""],
+  [49, "POLIWRATH",   "← POLIWHIRL",        "canon",  ""],
+  [50, "POLITOED",    "← POLIWHIRL",        "gs97r",  ""],
+  [51, "MAGIKARP",    "",                   "spg",  ""],
+  [52, "GYARADOS",    "← MAGIKARP",         "spg",  ""],
+  [53, "GUPGOLD",     "",                   "gs97r",  ""],
+  [54, "GOLDEEN",     "← GUPGOLD",          "spg",  ""],
+  [55, "SEAKING",     "← GOLDEEN",          "spg",  ""],
+  [56, "SLOWPOKE",    "",                   "canon",  ""],
+  [57, "SLOWBRO",     "← SLOWPOKE",         "canon",  ""],
+  [58, "SLOWKING",    "← SLOWPOKE",         "canon",  ""],
+  [200,"ABRA",        "",                   "spg",    ""],
+  [201,"KADABRA",     "← ABRA",             "spg",    ""],
+  [202,"ALAKAZAM",    "← KADABRA",          "spg",    ""],
+  [59, "SHELLDER",    "",                   "canon",  ""],
+  [60, "TURBAN",      "← SHELLDER",         "gs97r",  ""],
+  [61, "CLOYSTER",    "← SHELLDER",         "canon",  ""],
+  [62, "DITTO",       "",                   "canon",  ""],
+  [63, "METTO",       "← DITTO",            "gs97r",  ""],
+  [64, "NIDORAN_F",   "",                   "canon",  ""],
+  [65, "NIDORINA",    "← NIDORAN_F",        "spg",  ""],
+  [66, "NIDOQUEEN",   "← NIDORINA",         "spg",  ""],
+  [67, "NIDORAN_M",   "",                   "canon",  ""],
+  [68, "NIDORINO",    "← NIDORAN_M",        "spg",  ""],
+  [69, "NIDOKING",    "← NIDORINO",         "spg",  ""],
+  [70, "NIDOREIGN",   "← NIDORINA / NIDORINO", "kep", ""],
+  [71, "RINRING",     "",                   "gs97r",  ""],
+  [72, "BELLRUN",     "← RINRING",          "gs97r",  ""],
+  [73, "KOTORA",      "",                   "gs97r",  ""],
+  [74, "RAITORA",     "← KOTORA",           "gs97r",  ""],
+  [75, "GOROTORA",    "← RAITORA",          "kep",    ""],
+  [214,"SCYTHER",     "",                   "canon",  ""],
+  [215,"SCIZOR",      "← SCYTHER",          "canon",  ""],
+  [76, "PINSIR",      "",                   "canon",  ""],
+  [77, "PRAXE",       "← PINSIR",           "gs97r",  ""],
+  [78, "GRIMBY",      "",                   "gs97r",  ""],
+  [79, "GRIMER",      "← GRIMBY",           "canon",  ""],
+  [80, "MUK",         "← GRIMER",           "canon",  ""],
+  [81, "MAGNEMITE",   "",                   "canon",  ""],
+  [82, "MAGNETITE",   "← MAGNEMITE",        "kep",    ""],
+  [83, "MAGNETON",    "← MAGNETITE",        "canon",  ""],
+  [84, "MAGNEZONE",   "← MAGNETON",         "canon",  ""],
+  [85, "AIPOM",       "",                   "gs97r",  ""],
+  [86, "AMBIPOM",     "← AIPOM",            "canon",  ""],
+  [87, "TRITALES",    "",                   "gs97r",  ""],
+  [88, "VULPIX",      "← TRITALES",         "canon",  ""],
+  [89, "NINETALES",   "← VULPIX",           "canon",  ""],
+  [90, "PUDDIPUP",    "",                   "gs97r",  ""],
+  [91, "GROWLITHE",   "← PUDDIPUP",         "canon",  ""],
+  [92, "ARCANINE",    "← GROWLITHE",        "canon",  ""],
+  [93, "AZURILL",     "",                   "canon",  ""],
+  [94, "MARILL",      "← AZURILL",          "gs97r",  ""],
+  [95, "AZUMARILL",   "← MARILL",           "gs97r",  ""],
+  [96, "BOMSHEAL",    "",                   "gs97r",  ""],
+  [203,"MANKEY",      "",                   "spg",    ""],
+  [204,"PRIMEAPE",    "← MANKEY",           "canon",  ""],
+  [205,"ANNIHILAPE",  "← PRIMEAPE",         "canon",  ""],
+  [97, "NYANYA",      "",                   "gs97r",  ""],
+  [98, "MEOWTH",      "← NYANYA",           "canon",  ""],
+  [99, "PERSIAN",     "← MEOWTH",           "canon",  ""],
+  [100,"CORASUN",     "",                   "gs97r",  ""],
+  [101,"ANCHORAGE",   "← CORASUN",          "gs97r",  ""],
+  [102,"GROTESS",     "← ANCHORAGE",        "gs97r",  ""],
+  [103,"PSYDUCK",     "",                   "spg",  ""],
+  [104,"WEIRDUCK",    "← PSYDUCK",          "kep",    ""],
+  [105,"GOLDUCK",     "← WEIRDUCK",         "spg",  ""],
+  [186,"TYROGUE",     "",                   "gs97r",  ""],
+  [187,"HITMONLEE",   "← TYROGUE",          "canon",  ""],
+  [188,"HITMONCHAN",  "← TYROGUE",          "canon",  ""],
+  [189,"HITMONTOP",   "← TYROGUE",          "gs97r",  ""],
+  [106,"TWINZ",       "",                   "gs97r",  ""],
+  [107,"GIRAFARIG",   "← TWINZ",            "gs97r",  ""],
+  [108,"FARIGIRAF",   "← GIRAFARIG",        "canon",  ""],
+  [109,"MAGBY",       "",                   "gs97r",  ""],
+  [110,"MAGMAR",      "← MAGBY",            "canon",  ""],
+  [111,"MAGMORTAR",   "← MAGMAR",           "canon",  ""],
+  [112,"SMOOCHUM",    "",                   "gs97r",  ""],
+  [113,"JYNX",        "← SMOOCHUM",         "canon",  ""],
+  [114,"ELEBABE",     "",                   "gs97r",  ""],
+  [115,"ELECTABUZZ",  "← ELEBABE",          "canon",  ""],
+  [116,"ELECTIVIRE",  "← ELECTABUZZ",       "canon",  ""],
+  [117,"BALLERINE",   "",                   "gs97r",  ""],
+  [118,"FARFETCH_D",  "",                   "canon",  ""],
+  [119,"MADAME",      "← FARFETCH_D",       "gs97r",  ""],
+  [120,"SIRFETCH_D",  "← FARFETCH_D",       "canon",  ""],
+  [121,"BLOTTLE",     "",                   "kep",    ""],
+  [122,"PENDRAKEN",   "← BLOTTLE",          "kep",    ""],
+  [206,"STARYU",      "",                   "spg",    ""],
+  [207,"STARMIE",     "← STARYU",           "spg",    ""],
+  [123,"REMORAID",    "",                   "gs97r",  ""],
+  [124,"OCTILLERY",   "← REMORAID",         "gs97r",  ""],
+  [125,"LICKITUNG",   "",                   "spg",  ""],
+  [126,"LICKILICKY",  "← LICKITUNG",        "canon",  ""],
+  [127,"LICKILORD",   "← LICKITUNG",        "gs97r",  ""],
+  [128,"TANGTRIP",    "",                   "gs97r",  ""],
+  [129,"TANGELA",     "← TANGTRIP",         "spg",  ""],
+  [130,"GELANIA",     "← TANGELA",          "gs97r",  ""],
+  [131,"TANGROWTH",   "← TANGELA",          "canon",  ""],
+  [132,"HORSEA",      "",                   "canon",  ""],
+  [133,"SEADRA",      "← HORSEA",           "canon",  ""],
+  [134,"KINGDRA",     "← SEADRA",           "gs97r",  ""],
+  [135,"DELIBIRD",    "",                   "gs97r",  ""],
+  [136,"KURSTRAW",    "",                   "gs97r",  ""],
+  [137,"PANGSHI",     "← KURSTRAW",         "gs97r",  ""],
+  [138,"QWILFISH",    "",                   "canon",  ""],
+  [139,"NUMBPUFF",    "← QWILFISH",         "gs97r",  ""],
+  [140,"RAYLEEP",     "",                   "gs97r",  ""],
+  [141,"CHIX",        "",                   "gs97r",  ""],
+  [142,"DODUO",       "← CHIX",             "canon",  ""],
+  [143,"DODRIO",      "← DODUO",            "canon",  ""],
+  [144,"PETICORN",    "",                   "gs97r",  ""],
+  [145,"PONYTA",      "← PETICORN",         "canon",  ""],
+  [146,"RAPIDASH",    "← PONYTA",           "canon",  ""],
+  [147,"CUBONE",      "",                   "canon",  ""],
+  [148,"MAROWAK",     "← CUBONE",           "canon",  ""],
+  [149,"GUARDIA",     "← MAROWAK",          "kep",    ""],
+  [150,"MURKROW",     "",                   "gs97r",  ""],
+  [151,"HONCHKROW",   "← MURKROW",          "canon",  ""],
+  [152,"WOLFAN",      "",                   "gs97r",  ""],
+  [153,"WARWOLF",     "← WOLFAN",           "gs97r",  ""],
+  [154,"SNEASEL",     "",                   "gs97r",  ""],
+  [155,"WEAVILE",     "← SNEASEL",          "canon",  ""],
+  [156,"SNEASLER",    "← SNEASEL",          "canon",  ""],
+  [157,"PORYGON",     "",                   "canon",  ""],
+  [158,"BETAGON",     "← PORYGON",          "gs97r",  ""],
+  [159,"PORYGON2",    "← PORYGON",          "canon",  ""],
+  [160,"PORYGON-Z",   "← PORYGON2",         "canon",  ""],
+  [161,"CHANSEY",     "",                   "canon",  ""],
+  [162,"BLISSEY",     "← CHANSEY",          "gs97r",  ""],
+  [163,"CHEEP",       "",                   "kep",    ""],
+  [164,"JABETTA",     "← CHEEP",            "kep",    ""],
+  [165,"RIBBITO",     "",                   "kep",    ""],
+  [166,"CROAKOZUNA",  "← RIBBITO",          "kep",    ""],
+  [167,"SQUIRTLE",    "",                   "canon",  ""],
+  [168,"WARTORTLE",   "← SQUIRTLE",         "canon",  ""],
+  [169,"TOTARTLE",    "← WARTORTLE",        "kep",    ""],
+  [170,"BLASTYKE",    "",                   "kep",    ""],
+  [171,"BLASTOISE",   "← BLASTYKE",         "canon",  ""],
+  [172,"GAVILLAIN",   "",                   "kep",    ""],
+  [173,"BALUMBA",     "",                   "kep",    ""],
+  [174,"SHARPOON",    "",                   "kep",    ""],
+  [175,"RAMOOSE",     "",                   "kep",    ""],
+  [176,"TRAMPEL",     "",                   "kep",    ""],
+  [177,"GORILLAIMO",  "",                   "kep",    ""],
+  [178,"CACTORMUS",   "",                   "kep",    ""],
+  [179,"BUU",         "",                   "kep",    ""],
+  [180,"OMEGADGE",    "",                   "kep",    ""],
+  [181,"SQUEAMATA",   "",                   "kep",    ""],
+  [182,"MINISTARE",   "← SQUEAMATA",        "kep",    ""],
+  [183,"IGUANARCH",   "← MINISTARE",        "kep",    ""],
+  [184,"DECILLA",     "",                   "kep",    ""],
+  [185,"GAWARHED",    "← DECILLA",          "kep",    ""],
+  [190,"ARTICUNO",    "",                   "spg",  ""],
+  [191,"ZAPDOS",      "",                   "spg",  ""],
+  [192,"MOLTRES",     "",                   "spg",  ""],
+  [193,"RAIKOU",      "",                   "gs97r",  ""],
+  [194,"ENTEI",       "",                   "gs97r",  ""],
+  [195,"SUICUNE",     "",                   "gs97r",  ""],
+  [196,"LUGIA",       "",                   "canon",  ""],
+  [197,"HO_OH",       "",                   "canon",  ""],
+  [198,"MEWTWO",      "",                   "spg",  ""],
+  [199,"MEW",         "",                   "spg",  ""],
+];
+
+document.getElementById('total-count').textContent = DEX.length;
+
+
+
+function buildGrid(data) {
+  currentData = data;
+  const grid = document.getElementById('grid-view');
+  grid.innerHTML = '';
+  data.forEach(([num, name, evo, source, notes]) => {
+    const urls = spriteUrl(name, source);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.source = source;
+    card.dataset.name = name.toLowerCase();
+
+    const hasResearch = notes.includes('⚠') || notes.includes('research');
+
+    card.innerHTML = `
+      <div class="source-badge ${getDotClass(source)}" title="${getSourceLabel(source)}"></div>
+      <div class="num">#${String(num).padStart(3,'0')}</div>
+      <div class="sprite-wrap">
+        <div class="sprite-inner"><img alt="${name}"></div>
+      </div>
+      <div class="name">${name.replace('_', ' ')}</div>
+      <div class="evo-short" title="${evo}">${evo}</div>
+      ${hasResearch ? '<div class="research-flag">⚠ needs research</div>' : ''}
+    `;
+    grid.appendChild(card);
+    loadSprite(card.querySelector('.sprite-inner img'), urls);
+  });
+}
+
+function buildTable(data) {
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '';
+  data.forEach(([num, name, evo, source, notes]) => {
+    const urls = spriteUrl(name, source);
+    const tr = document.createElement('tr');
+    tr.dataset.source = source;
+    tr.dataset.name = name.toLowerCase();
+    tr.innerHTML = `
+      <td style="color:var(--muted);font-size:0.8rem">#${String(num).padStart(3,'0')}</td>
+      <td>
+        <div class="sprite-wrap-table">
+          <div class="sprite-inner-table"><img alt="${name}"></div>
+        </div>
+      </td>
+      <td style="font-weight:bold">${name.replace(/_/g,' ')}</td>
+      <td style="color:var(--muted);font-size:0.8rem">${evo}</td>
+      <td><span class="tag ${getSourceClass(source)}">${getSourceLabel(source)}</span></td>
+      <td style="color:var(--muted);font-size:0.8rem">${notes}</td>
+    `;
+    tbody.appendChild(tr);
+    loadSprite(tr.querySelector('.sprite-inner-table img'), urls);
+  });
+}
+
+function filterDex() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const src = document.getElementById('source-filter').value;
+  const filtered = DEX.filter(([num, name, evo, source, notes]) => {
+    const matchName = name.toLowerCase().includes(q);
+    const matchSrc = !src || source === src;
+    return matchName && matchSrc;
+  });
+  buildGrid(filtered);
+  buildTable(filtered);
+
+}
+
+function setView(v) {
+  document.getElementById('grid-view').style.display = v === 'grid' ? 'grid' : 'none';
+  document.getElementById('table-view').style.display = v === 'table' ? 'block' : 'none';
+  document.getElementById('btn-grid').classList.toggle('active', v === 'grid');
+  document.getElementById('btn-table').classList.toggle('active', v === 'table');
+}
+
+// Initial render
+buildGrid(DEX);
+buildTable(DEX);
+</script>
+</body>
+</html>
