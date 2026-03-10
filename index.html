@@ -103,8 +103,8 @@
     content: '';
     position: absolute;
     left: 0; right: 0;
-    top: calc(50% - 3px);
-    height: 6px;
+    top: calc(50% - 1.5px);
+    height: 3px;
     background: #111;
     z-index: 1;
   }
@@ -117,15 +117,15 @@
   }
   .card .sprite-wrap::before, .card .sprite-wrap::after { display: none; }
   .card .sprite-inner {
-    width: 68%; height: 68%;
+    width: 80%; height: 80%;
     border-radius: 10px;
     background: #ececec;
-    border: 2px solid #111;
+    border: 1px solid #333;
     display: flex; align-items: center; justify-content: center;
     overflow: hidden;
   }
   .card .sprite-inner img {
-    width: 88%; height: 88%;
+    width: 95%; height: 95%;
     image-rendering: pixelated;
   }
   .card .sprite-inner .no-sprite {
