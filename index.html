@@ -186,8 +186,9 @@
     position: absolute; bottom: 0; left: 0;
     display: inline-flex; align-items: center; gap: 4px;
     background: rgba(0,0,0,0.72); padding: 3px 8px;
-    /* height matches the white bottom half of the pokeball card */
-    height: 50%;
+    /* sprite-inner is 80% tall and centered → its bottom sits 10% from card bottom.
+       Bar fills exactly that gap: from card bottom up to the sprite border. */
+    height: 10%;
     border-radius: 0 10px 0 0;
     max-width: 90%; overflow: hidden;
     z-index: 3;
