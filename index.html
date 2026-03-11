@@ -500,6 +500,7 @@
 
 
 let showBack = false;
+let currentView = 'grid';
 let currentData = [];
 
 function toggleSpriteSide() {
@@ -507,8 +508,7 @@ function toggleSpriteSide() {
   const btn = document.getElementById('btn-sprite-side');
   btn.textContent = showBack ? '🔄 Show Front' : '🔄 Show Back';
   btn.classList.toggle('active', showBack);
-  buildGrid(currentData);
-  buildTable(currentData);
+  renderCurrentView(currentData);
 }
 
 function toggleSpritesMenu(e) {
@@ -796,10 +796,9 @@ document.getElementById('total-count').textContent = DEX.length;
 
 
 function buildGrid(data) {
-  currentData = data;
   const grid = document.getElementById('grid-view');
   grid.innerHTML = '';
-  data.forEach(([num, name, evo, source, notes]) => {
+  data.forEach(([num, name, , source]) => {
     const urls = spriteUrl(name);
     const card = document.createElement('div');
     card.className = 'card';
@@ -814,7 +813,7 @@ function buildGrid(data) {
       <div class="name-bar">
         <span class="num">#${String(num).padStart(3,'0')}</span>
         <span class="name-badge ${getDotClass(source)}" title="${getSourceLabel(source)}"></span>
-        <span class="name">${name.replace(/_/g, ' ')}</span>
+        <span class="name">${displayName(name)}</span>
       </div>
     `;
     card.addEventListener('click', () => openDetail(num));
@@ -839,7 +838,7 @@ function buildTable(data) {
           <div class="sprite-inner-table"><img alt="${name}"></div>
         </div>
       </td>
-      <td style="font-weight:bold">${name.replace(/_/g,' ')}</td>
+      <td style="font-weight:bold">${displayName(name)}</td>
       <td style="color:var(--muted);font-size:0.8rem">${evo}</td>
       <td><span class="tag ${getSourceClass(source)}">${getSourceLabel(source)}</span></td>
       <td style="color:var(--muted);font-size:0.8rem">${notes}</td>
@@ -856,28 +855,34 @@ function toggleSource(btn) {
   filterDex();
 }
 
+function renderCurrentView(data) {
+  currentData = data;
+  if (currentView === 'grid') buildGrid(data);
+  else buildTable(data);
+}
+
 function filterDex() {
   const q = document.getElementById('search').value.toLowerCase();
-  const active = [...document.querySelectorAll('.src-btn.active')].map(b => b.dataset.src);
-  const filtered = DEX.filter(([num, name, , source]) => {
+  const activeSources = [...document.querySelectorAll('.src-btn.active')].map(b => b.dataset.src);
+  const filtered = DEX.filter(([, name, , source]) => {
     const matchName = name.toLowerCase().includes(q);
-    const matchSrc = active.length === 0 || active.includes(source);
+    const matchSrc = activeSources.length === 0 || activeSources.includes(source);
     return matchName && matchSrc;
   });
-  buildGrid(filtered);
-  buildTable(filtered);
+  renderCurrentView(filtered);
 }
 
 function setView(v) {
+  currentView = v;
   document.getElementById('grid-view').style.display = v === 'grid' ? 'grid' : 'none';
   document.getElementById('table-view').style.display = v === 'table' ? 'block' : 'none';
   document.getElementById('btn-grid').classList.toggle('active', v === 'grid');
   document.getElementById('btn-table').classList.toggle('active', v === 'table');
+  renderCurrentView(currentData);
 }
 
 // Initial render
-buildGrid(DEX);
-buildTable(DEX);
+renderCurrentView(DEX);
 
 // ── DETAIL MODAL ─────────────────────────────────────────────────────────
 
@@ -908,8 +913,12 @@ function loadSpriteInto(img, name) {
   loadSprite(img, ['sprites/' + n + '/front.png', 'sprites/' + n + '.png']);
 }
 
-function fmtMoveName(n) {
-  return n.replace(/_M$/, '').replace(/_/g,' ')
+function displayName(name) {
+  return name.replace(/_/g, ' ');
+}
+
+function formatMoveName(moveName) {
+  return moveName.replace(/_M$/, '').replace(/_/g, ' ')
     .toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
 }
 
@@ -919,16 +928,13 @@ function typeBadge(type, cls='type-badge') {
 }
 
 function openDetail(pid) {
-  if (!pokemonData) return;
-  const pokemon = pokemonData[String(pid)];
+  const pokemon = pokemonData?.[String(pid)];
   if (!pokemon) return;
   currentDetailId = pid;
-  document.getElementById('detail-prev').disabled = false;
-  document.getElementById('detail-next').disabled = false;
 
   // header
   document.getElementById('detail-num').textContent = '#' + String(pid).padStart(3,'0');
-  document.getElementById('detail-name').textContent = pokemon.name.replace(/_/g,' ');
+  document.getElementById('detail-name').textContent = displayName(pokemon.name);
 
   const species = pokemon.dex && pokemon.dex.species ? pokemon.dex.species : '';
   document.getElementById('detail-species').textContent = species ? species + ' Pokémon' : '';
@@ -938,7 +944,6 @@ function openDetail(pid) {
 
   const mainImg = document.getElementById('detail-sprite');
   loadSpriteInto(mainImg, pokemon.name);
-
   // evoline
   buildEvoLine(pokemon, pid);
 
@@ -964,7 +969,7 @@ function openDetail(pid) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td class="move-level">${mv.level === 0 ? '—' : mv.level}</td>
-      <td class="move-name">${fmtMoveName(mv.move)}</td>
+      <td class="move-name">${formatMoveName(mv.move)}</td>
       <td>${typeBadge(mv.type, 'move-type-badge')}</td>
     `;
     tbody.appendChild(tr);
@@ -979,7 +984,7 @@ function buildEvoEntry(pid, activePid) {
   if (!pokemon) return null;
   const entry = document.createElement('div');
   entry.className = 'evo-entry' + (pid === activePid ? ' active' : '');
-  entry.title = pokemon.name.replace(/_/g,' ');
+  entry.title = displayName(pokemon.name);
   entry.onclick = () => openDetail(pid);
   const imgEl = document.createElement('img');
   imgEl.width = 68; imgEl.height = 68;
@@ -988,7 +993,7 @@ function buildEvoEntry(pid, activePid) {
   box.appendChild(imgEl);
   const nameDiv = document.createElement('div');
   nameDiv.className = 'evo-name';
-  nameDiv.textContent = pokemon.name.replace(/_/g,' ');
+  nameDiv.textContent = displayName(pokemon.name);
   entry.appendChild(box);
   entry.appendChild(nameDiv);
   loadSpriteInto(imgEl, pokemon.name);
