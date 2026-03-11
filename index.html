@@ -375,9 +375,9 @@
 
   /* ── MOBILE DETAIL PANEL ─────────────────────────────────────────────── */
   @media (max-width: 600px) {
-    #detail-overlay { padding: 6px; }
+    #detail-overlay { padding: 6px; overflow-x: hidden; }
 
-    #detail-panel { border-radius: 12px; }
+    #detail-panel { border-radius: 12px; overflow-x: hidden; }
 
     .detail-header { padding: 18px 14px 14px; gap: 7px; }
 
@@ -393,10 +393,11 @@
 
     /* Scale down the entire evoline so wide chains fit on screen.
        zoom affects layout (unlike transform:scale), so the container
-       shrinks naturally. Inline-styled arrow divs scale with it. */
-    .evoline { zoom: 0.72; }
+       shrinks naturally and inline-styled arrow divs scale with it.
+       Worst case: 4-stage linear chain = 572px CSS. Available width ~335px.
+       0.58 × 572 = 332px — fits. */
+    .evoline { zoom: 0.58; }
 
-    /* Tighten the evo sprite boxes */
     .evo-sprite-box { width: 62px; height: 62px; }
     .evo-sprite-box img { width: 52px; height: 52px; }
     .evo-name { max-width: 62px; font-size: 0.65rem; }
