@@ -15,10 +15,7 @@
     --muted: #8aabcc;
     --gs97r: #c8a000;
     --kep: #c0392b;
-    --both: #9b7ec8;
-    --beta: #d4a017;
     --canonical: #555f6e;
-    --legendary: #c0392b;
     --spg: #2e8b57;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,46 +23,67 @@
 
   header {
     background: linear-gradient(135deg, #2a2200, #1a1600);
-    padding: 32px 40px 24px;
+    padding: 20px 40px;
     border-bottom: 2px solid var(--gold);
+    text-align: center;
   }
   header h1 { font-size: 2.2rem; color: var(--gold); letter-spacing: 2px; }
-  header p { color: var(--muted); margin-top: 6px; font-size: 0.9rem; }
-  .stats-bar {
-    display: flex; gap: 24px; margin-top: 16px; flex-wrap: wrap;
-  }
-  .stat { background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-    padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; }
-  .stat span { color: var(--gold); font-weight: bold; font-size: 1.1rem; }
 
   .controls {
     background: #211b00;
-    padding: 16px 40px;
-    display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+    padding: 12px 24px;
+    display: flex; gap: 12px; align-items: center;
     border-bottom: 1px solid var(--border);
     position: sticky; top: 0; z-index: 100;
   }
+  .dex-count {
+    font-size: 0.82rem; color: var(--muted); white-space: nowrap; flex-shrink: 0;
+  }
+  .dex-count span { color: var(--gold); font-weight: bold; }
   input[type=text] {
     background: var(--card); border: 1px solid var(--border); color: var(--text);
-    padding: 8px 14px; border-radius: 8px; font-size: 0.9rem; width: 220px;
-    outline: none;
+    padding: 8px 14px; border-radius: 8px; font-size: 0.9rem; width: 200px;
+    outline: none; flex-shrink: 0;
   }
   input[type=text]:focus { border-color: var(--accent); }
-  .source-btns { display: flex; gap: 6px; flex-wrap: wrap; }
   .src-btn {
     background: var(--card); border: 1px solid var(--border); color: var(--muted);
     padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.82rem;
-    transition: background 0.12s, color 0.12s, border-color 0.12s;
+    transition: background 0.12s, color 0.12s, border-color 0.12s; width: 100%;
+    text-align: left;
   }
   .src-btn[data-src="gs97r"].active { background: rgba(200,160,0,0.18); color: var(--gs97r); border-color: var(--gs97r); }
   .src-btn[data-src="kep"].active   { background: rgba(192,57,43,0.18); color: #e05a4a; border-color: var(--kep); }
   .src-btn[data-src="canon"].active { background: rgba(85,95,110,0.25); color: #9aabb8; border-color: #555f6e; }
   .src-btn[data-src="spg"].active   { background: rgba(46,139,87,0.18); color: #4ecb7a; border-color: var(--spg); }
+  .ctrl-right { display: flex; gap: 8px; align-items: center; margin-left: auto; }
+  .view-toggle { display: flex; gap: 6px; }
   .view-toggle button {
     background: var(--card); border: 1px solid var(--border); color: var(--muted);
     padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem;
   }
   .view-toggle button.active { background: var(--accent); color: #1a1600; border-color: var(--accent); }
+  .sprites-wrap { position: relative; }
+  #btn-sprites {
+    background: var(--card); border: 1px solid var(--border); color: var(--muted);
+    padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 0.85rem;
+  }
+  #btn-sprites:hover { border-color: var(--accent); color: var(--accent); }
+  .sprites-menu {
+    position: absolute; right: 0; top: calc(100% + 6px);
+    background: #211b00; border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px; min-width: 140px; z-index: 200;
+    display: flex; flex-direction: column; gap: 6px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  }
+  .sprites-menu.hidden { display: none; }
+  #btn-sprite-side {
+    background: var(--card); border: 1px solid var(--border); color: var(--muted);
+    padding: 7px 12px; border-radius: 8px; cursor: pointer; font-size: 0.82rem;
+    text-align: left; width: 100%;
+  }
+  #btn-sprite-side.active { background: rgba(232,184,0,0.15); color: var(--gold); border-color: var(--accent); }
+  .source-btns-vert { display: flex; flex-direction: column; gap: 5px; margin-top: 2px; }
 
   .legend {
     display: flex; gap: 12px; flex-wrap: wrap; padding: 12px 40px;
@@ -77,15 +95,18 @@
   /* GRID VIEW */
   #grid-view {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     gap: 12px;
     padding: 24px 40px;
   }
-  @media (max-width: 600px) {
-    #grid-view {
-      grid-template-columns: repeat(3, 1fr);
-      padding: 12px 16px;
-    }
+  @media (max-width: 1300px) { #grid-view { grid-template-columns: repeat(5, 1fr); } }
+  @media (max-width: 1050px) { #grid-view { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 800px)  { #grid-view { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 560px)  { #grid-view { grid-template-columns: repeat(2, 1fr); padding: 12px 16px; } }
+  @media (max-width: 360px)  { #grid-view { grid-template-columns: repeat(1, 1fr); } }
+  @media (max-width: 480px) {
+    .controls { padding: 10px 12px; gap: 8px; }
+    input[type=text] { width: 140px; }
   }
   .card {
     border: 2px solid #1a1600;
@@ -176,7 +197,6 @@
   .card .name-badge {
     width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
   }
-  .card .evo-short { display: none; }
   .name-badge {
     width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
   }
@@ -202,53 +222,191 @@
   /* Source colors */
   .src-gs97r   { background: rgba(91,155,213,0.2); color: #7bbfff; }
   .src-kep     { background: rgba(106,177,135,0.2); color: #7dd4a0; }
-  .src-both    { background: rgba(155,126,200,0.2); color: #c9a8ff; }
-  .src-beta    { background: rgba(212,160,23,0.2); color: #f0c040; }
   .src-canon   { background: rgba(85,95,110,0.2); color: #aabbcc; }
-  .src-legend  { background: rgba(192,57,43,0.2); color: #ff8070; }
   .src-spg     { background: rgba(46,139,87,0.2); color: #5dba82; }
 
   .dot-gs97r  { background: var(--gs97r); }
   .dot-kep    { background: var(--kep); }
-  .dot-both   { background: var(--both); }
-  .dot-beta   { background: var(--beta); }
   .dot-canon  { background: var(--canonical); }
-  .dot-legend { background: var(--legendary); }
   .dot-spg    { background: var(--spg); }
 
-  .research-flag { color: #ff6b6b; font-size: 0.75rem; }
-
   footer { text-align: center; padding: 24px; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+
+  /* ── DETAIL MODAL ────────────────────────────────────────────────────── */
+  #detail-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75); z-index: 1000;
+    align-items: flex-start; justify-content: center;
+    padding: 16px;
+    overflow-y: auto;
+  }
+  #detail-overlay.open { display: flex; }
+
+  #detail-panel {
+    background: #1e1900; border: 2px solid var(--gold);
+    border-radius: 16px; width: 100%; max-width: 860px;
+    height: fit-content;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.8);
+    position: relative;
+  }
+  #detail-panel::-webkit-scrollbar { width: 6px; }
+  #detail-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  #detail-close {
+    position: absolute; top: 14px; right: 18px;
+    background: none; border: none; color: var(--muted);
+    font-size: 1.6rem; cursor: pointer; line-height: 1;
+    z-index: 2;
+  }
+  #detail-close:hover { color: var(--gold); }
+
+  .detail-header {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    padding: 28px 32px 18px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+    position: relative;
+  }
+  .detail-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: none; border: 2px solid var(--border);
+    width: 48px; height: 48px; border-radius: 50%;
+    cursor: pointer; padding: 0; overflow: hidden;
+    transition: border-color 0.12s;
+  }
+  .detail-nav::after {
+    content: '';
+    display: block;
+    width: 10px; height: 10px;
+    border-top: 2.5px solid var(--muted);
+    border-right: 2.5px solid var(--muted);
+    position: absolute; top: 50%; left: 50%;
+    transition: border-color 0.12s;
+  }
+  #detail-prev::after {
+    transform: translate(-25%, -50%) rotate(-135deg);
+  }
+  #detail-next::after {
+    transform: translate(-75%, -50%) rotate(45deg);
+  }
+  .detail-nav:hover { border-color: var(--gold); }
+  .detail-nav:hover::after { border-color: var(--gold); }
+  #detail-prev { left: 14px; }
+  #detail-next { right: 14px; }
+  .detail-main-sprite {
+    width: 120px; height: 120px;
+    image-rendering: pixelated; background: #2a2000;
+    border: 2px solid var(--border); border-radius: 10px;
+    object-fit: contain;
+  }
+  .detail-num { font-size: 0.9rem; color: var(--muted); }
+  .detail-name { font-size: 1.8rem; font-weight: bold; color: var(--gold); line-height: 1.1; }
+  .detail-species { font-size: 0.95rem; color: var(--muted); margin-top: 2px; }
+  .detail-types { display: flex; gap: 8px; margin-top: 6px; justify-content: center; }
+  .type-badge {
+    padding: 4px 14px; border-radius: 12px; font-size: 0.82rem;
+    font-weight: bold; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    letter-spacing: 0.5px; text-transform: uppercase;
+  }
+
+  .detail-body { padding: 20px 32px; display: flex; flex-direction: column; gap: 22px; }
+
+  /* Evoline */
+  .detail-section-label {
+    font-size: 0.8rem; font-weight: bold; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;
+    text-align: center;
+  }
+  .evoline {
+    display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;
+  }
+  .evo-entry {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    cursor: pointer;
+  }
+  .evo-entry.active .evo-sprite-box { border-color: var(--gold); background: #2e2400; }
+  .evo-sprite-box {
+    width: 80px; height: 80px; border: 2px solid var(--border); border-radius: 10px;
+    background: #222; display: flex; align-items: center; justify-content: center;
+    overflow: hidden; transition: border-color 0.12s;
+  }
+  .evo-sprite-box:hover { border-color: var(--accent); }
+  .evo-sprite-box img { width: 68px; height: 68px; image-rendering: pixelated; }
+  .evo-name {
+    font-size: 0.72rem; color: var(--muted); text-align: center;
+    max-width: 80px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  /* Stats */
+  .stat-row { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+  .stat-label { width: 40px; color: var(--muted); font-size: 0.8rem; text-align: right; flex-shrink: 0; }
+  .stat-val { width: 32px; color: var(--text); font-weight: bold; flex-shrink: 0; }
+  .stat-bar-bg { flex: 1; height: 9px; background: #2a2000; border-radius: 4px; overflow: hidden; }
+  .stat-bar { height: 100%; border-radius: 4px; transition: width 0.3s; }
+  .stat-total-row {
+    display: flex; justify-content: space-between; font-size: 0.9rem;
+    color: var(--muted); border-top: 1px solid var(--border); padding-top: 8px; margin-top: 6px;
+  }
+  .stat-total-val { color: var(--gold); font-weight: bold; }
+
+  /* Dex text */
+  .dex-text-box {
+    background: #161200; border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px 18px; font-size: 0.92rem; line-height: 1.7; color: var(--text);
+    font-family: monospace;
+  }
+  .dex-hw { font-size: 0.8rem; color: var(--muted); margin-top: 8px; }
+
+  /* Moves */
+  .moves-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  .moves-table th {
+    background: #2a2200; color: var(--gold); padding: 7px 12px;
+    text-align: left; border-bottom: 1px solid var(--border);
+    font-size: 0.72rem; position: static;
+  }
+  .moves-table td { padding: 5px 10px; border-bottom: 1px solid #2a2000; }
+  .moves-table tr:hover td { background: rgba(232,184,0,0.04); }
+  .move-level { color: var(--muted); font-size: 0.75rem; }
+  .move-name { color: var(--text); }
+  .move-type-badge {
+    padding: 2px 7px; border-radius: 10px; font-size: 0.66rem;
+    font-weight: bold; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    text-transform: uppercase; letter-spacing: 0.3px;
+  }
 </style>
 </head>
 <body>
 
 <header>
   <h1>Lostmon Canaã</h1>
-  <div class="stats-bar">
-    <div class="stat">Total: <span id="total-count">0</span></div>
-  </div>
 </header>
 
 <div class="controls">
+  <span class="dex-count">Total: <span id="total-count">0</span></span>
   <input type="text" id="search" placeholder="🔍 Search name..." oninput="filterDex()">
-  <div class="source-btns">
-    <button class="src-btn" data-src="gs97r" onclick="toggleSource(this)">GS97R</button>
-    <button class="src-btn" data-src="kep" onclick="toggleSource(this)">KEP</button>
-    <button class="src-btn" data-src="canon" onclick="toggleSource(this)">Canonical</button>
-    <button class="src-btn" data-src="spg" onclick="toggleSource(this)">SPG</button>
+  <div class="ctrl-right">
+    <div class="view-toggle">
+      <button id="btn-grid" class="active" onclick="setView('grid')">⊞ Grid</button>
+      <button id="btn-table" onclick="setView('table')">☰ Table</button>
+    </div>
+    <div class="sprites-wrap">
+      <button id="btn-sprites" onclick="toggleSpritesMenu(event)">🖼 Sprites</button>
+      <div id="sprites-menu" class="sprites-menu hidden">
+        <button id="btn-sprite-side" onclick="toggleSpriteSide()">🔄 Show Back</button>
+        <div class="source-btns-vert">
+          <button class="src-btn" data-src="gs97r" onclick="toggleSource(this)">GS97R</button>
+          <button class="src-btn" data-src="kep" onclick="toggleSource(this)">KEP</button>
+          <button class="src-btn" data-src="canon" onclick="toggleSource(this)">Canon</button>
+          <button class="src-btn" data-src="spg" onclick="toggleSource(this)">SPG</button>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="view-toggle">
-    <button id="btn-grid" class="active" onclick="setView('grid')">⊞ Grid</button>
-    <button id="btn-table" onclick="setView('table')">☰ Table</button>
-  </div>
-  <button id="btn-sprite-side" onclick="toggleSpriteSide()" style="background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:0.85rem;margin-left:auto;">🔄 Show Back</button>
 </div>
 
 <div class="legend">
   <div class="legend-item"><div class="legend-dot dot-gs97r"></div> GS97R</div>
   <div class="legend-item"><div class="legend-dot dot-kep"></div> KEP</div>
-  <div class="legend-item"><div class="legend-dot dot-canon"></div> Canonical</div>
+  <div class="legend-item"><div class="legend-dot dot-canon"></div> Canon</div>
   <div class="legend-item"><div class="legend-dot dot-spg"></div> SPG</div>
 </div>
 
@@ -262,6 +420,45 @@
     </thead>
     <tbody id="table-body"></tbody>
   </table>
+</div>
+
+<div id="detail-overlay" onclick="closeDetailIfOutside(event)">
+  <div id="detail-panel">
+    <button id="detail-close" onclick="closeDetail()">✕</button>
+    <div class="detail-header">
+      <button class="detail-nav" id="detail-prev" onclick="navigateDex(-1)" title="Previous"></button>
+      <button class="detail-nav" id="detail-next" onclick="navigateDex(1)" title="Next"></button>
+      <img id="detail-sprite" class="detail-main-sprite" alt="">
+      <div class="detail-num" id="detail-num"></div>
+      <div class="detail-name" id="detail-name"></div>
+      <div class="detail-species" id="detail-species"></div>
+      <div class="detail-types" id="detail-types"></div>
+    </div>
+    <div class="detail-body">
+      <div>
+        <div class="detail-section-label">Evolution Line</div>
+        <div class="evoline" id="detail-evoline"></div>
+      </div>
+      <div>
+        <div class="detail-section-label">Base Stats</div>
+        <div id="detail-stats"></div>
+      </div>
+      <div>
+        <div class="detail-section-label">Pokédex</div>
+        <div class="dex-text-box">
+          <div id="detail-dex-text"></div>
+          <div class="dex-hw" id="detail-dex-hw"></div>
+        </div>
+      </div>
+      <div>
+        <div class="detail-section-label">Level-Up Moves</div>
+        <table class="moves-table">
+          <thead><tr><th>Lv.</th><th>Move</th><th>Type</th></tr></thead>
+          <tbody id="detail-moves"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 
 <footer>Lostmon Canaã — Sprites used from gold97 (SoupPotato), kep-hack (ShiraTheMogul), polishedcrystal (Rangi42) and shinpokered (jojobear13).</footer>
@@ -279,10 +476,24 @@ let currentData = [];
 
 function toggleSpriteSide() {
   showBack = !showBack;
-  document.getElementById('btn-sprite-side').textContent = showBack ? '🔄 Show Front' : '🔄 Show Back';
+  const btn = document.getElementById('btn-sprite-side');
+  btn.textContent = showBack ? '🔄 Show Front' : '🔄 Show Back';
+  btn.classList.toggle('active', showBack);
   buildGrid(currentData);
   buildTable(currentData);
 }
+
+function toggleSpritesMenu(e) {
+  e.stopPropagation();
+  document.getElementById('sprites-menu').classList.toggle('hidden');
+}
+
+document.addEventListener('click', function() {
+  document.getElementById('sprites-menu').classList.add('hidden');
+});
+document.getElementById('sprites-menu').addEventListener('click', function(e) {
+  e.stopPropagation();
+});
 
 function nameToKey(name) {
   return name.toLowerCase()
@@ -292,25 +503,20 @@ function nameToKey(name) {
     .replace(/[^a-z0-9_]/g, '');
 }
 
-function spriteUrl(name, source) {
+function spriteUrl(name) {
   const n = nameToKey(name);
   const side = showBack ? 'back' : 'front';
   return ['sprites/' + n + '/' + side + '.png', 'sprites/' + n + '.png'];
 }
 
 function getSourceClass(source) {
-  if (source === 'both') return 'src-both';
-  if (source === 'gs97r') return 'src-gs97r';
-  if (source === 'kep') return 'src-kep';
-  if (source === 'beta') return 'src-beta';
-  if (source === 'legend') return 'src-legend';
-  if (source === 'spg') return 'src-spg';
-  return 'src-canon';
+  const map = { gs97r:'src-gs97r', kep:'src-kep', spg:'src-spg' };
+  return map[source] || 'src-canon';
 }
-function getDotClass(source) { return 'dot-' + (source === 'spg' ? 'spg' : source); }
+function getDotClass(source) { return 'dot-' + source; }
 
 function getSourceLabel(source) {
-  const map = { gs97r:'GS97R', kep:'KEP', both:'GS97R+KEP', beta:'Beta', canon:'Canonical', legend:'Legendary', spg:'SPG' };
+  const map = { gs97r:'GS97R', kep:'KEP', canon:'Canon', spg:'SPG' };
   return map[source] || source;
 }
 
@@ -464,86 +670,97 @@ const DEX = [
   [135,"ELECTABUZZ",  "← ELEBABE",             "canon",  ""],
   [136,"ELECTIVIRE",  "← ELECTABUZZ",          "canon",  ""],
   [137,"BALLERINE",   "",                      "gs97r",  ""],
-  [138,"FARFETCH_D",  "",                      "canon",  ""],
-  [139,"MADAME",      "← FARFETCH_D",          "gs97r",  ""],
-  [140,"SIRFETCH_D",  "← FARFETCH_D",          "canon",  ""],
-  [141,"BLOTTLE",     "",                      "kep",    ""],
-  [142,"PENDRAKEN",   "← BLOTTLE",             "kep",    ""],
-  [143,"STARYU",      "",                      "spg",    ""],
-  [144,"STARMIE",     "← STARYU",              "spg",    ""],
-  [145,"REMORAID",    "",                      "gs97r",  ""],
-  [146,"OCTILLERY",   "← REMORAID",            "gs97r",  ""],
-  [147,"LICKITUNG",   "",                      "spg",    ""],
-  [148,"LICKILICKY",  "← LICKITUNG",           "canon",  ""],
-  [149,"LICKILORD",   "← LICKITUNG",           "gs97r",  ""],
-  [150,"TANGTRIP",    "",                      "gs97r",  ""],
-  [151,"TANGELA",     "← TANGTRIP",            "spg",    ""],
-  [152,"GELANIA",     "← TANGELA",             "gs97r",  ""],
-  [153,"TANGROWTH",   "← TANGELA",             "canon",  ""],
-  [154,"HORSEA",      "",                      "canon",  ""],
-  [155,"SEADRA",      "← HORSEA",              "canon",  ""],
-  [156,"KINGDRA",     "← SEADRA",              "gs97r",  ""],
-  [157,"DELIBIRD",    "",                      "gs97r",  ""],
-  [158,"KURSTRAW",    "",                      "gs97r",  ""],
-  [159,"PANGSHI",     "← KURSTRAW",            "gs97r",  ""],
-  [160,"QWILFISH",    "",                      "canon",  ""],
-  [161,"NUMBPUFF",    "← QWILFISH",            "gs97r",  ""],
-  [162,"RAYLEEP",     "",                      "gs97r",  ""],
-  [163,"CHIX",        "",                      "gs97r",  ""],
-  [164,"DODUO",       "← CHIX",                "canon",  ""],
-  [165,"DODRIO",      "← DODUO",               "canon",  ""],
-  [166,"PETICORN",    "",                      "gs97r",  ""],
-  [167,"PONYTA",      "← PETICORN",            "canon",  ""],
-  [168,"RAPIDASH",    "← PONYTA",              "canon",  ""],
-  [169,"CUBONE",      "",                      "canon",  ""],
-  [170,"MAROWAK",     "← CUBONE",              "canon",  ""],
-  [171,"GUARDIA",     "← MAROWAK",             "kep",    ""],
-  [172,"MURKROW",     "",                      "gs97r",  ""],
-  [173,"HONCHKROW",   "← MURKROW",             "canon",  ""],
-  [174,"WOLFAN",      "",                      "gs97r",  ""],
-  [175,"WARWOLF",     "← WOLFAN",              "gs97r",  ""],
-  [176,"SNEASEL",     "",                      "gs97r",  ""],
-  [177,"WEAVILE",     "← SNEASEL",             "canon",  ""],
-  [178,"SNEASLER",    "← SNEASEL",             "canon",  ""],
-  [179,"PORYGON",     "",                      "canon",  ""],
-  [180,"BETAGON",     "← PORYGON",             "gs97r",  ""],
-  [181,"PORYGON2",    "← PORYGON",             "canon",  ""],
-  [182,"PORYGON-Z",   "← PORYGON2",            "canon",  ""],
-  [183,"CHANSEY",     "",                      "canon",  ""],
-  [184,"BLISSEY",     "← CHANSEY",             "gs97r",  ""],
-  [185,"CHEEP",       "",                      "kep",    ""],
-  [186,"JABETTA",     "← CHEEP",               "kep",    ""],
-  [187,"RIBBITO",     "",                      "kep",    ""],
-  [188,"CROAKOZUNA",  "← RIBBITO",             "kep",    ""],
-  [189,"SQUIRTLE",    "",                      "canon",  ""],
-  [190,"WARTORTLE",   "← SQUIRTLE",            "canon",  ""],
-  [191,"TOTARTLE",    "← WARTORTLE",           "kep",    ""],
-  [192,"BLASTYKE",    "",                      "kep",    ""],
-  [193,"BLASTOISE",   "← BLASTYKE",            "canon",  ""],
-  [194,"GAVILLAIN",   "",                      "kep",    ""],
-  [195,"BALUMBA",     "",                      "kep",    ""],
-  [196,"SHARPOON",    "",                      "kep",    ""],
-  [197,"RAMOOSE",     "",                      "kep",    ""],
-  [198,"TRAMPEL",     "",                      "kep",    ""],
-  [199,"GORILLAIMO",  "",                      "kep",    ""],
-  [200,"CACTORMUS",   "",                      "kep",    ""],
-  [201,"BUU",         "",                      "kep",    ""],
-  [202,"OMEGADGE",    "",                      "kep",    ""],
-  [203,"SQUEAMATA",   "",                      "kep",    ""],
-  [204,"MINISTARE",   "← SQUEAMATA",           "kep",    ""],
-  [205,"IGUANARCH",   "← MINISTARE",           "kep",    ""],
-  [206,"DECILLA",     "",                      "kep",    ""],
-  [207,"GAWARHED",    "← DECILLA",             "kep",    ""],
-  [208,"ARTICUNO",    "",                      "spg",    ""],
-  [209,"ZAPDOS",      "",                      "spg",    ""],
-  [210,"MOLTRES",     "",                      "spg",    ""],
-  [211,"RAIKOU",      "",                      "gs97r",  ""],
-  [212,"ENTEI",       "",                      "gs97r",  ""],
-  [213,"SUICUNE",     "",                      "gs97r",  ""],
-  [214,"LUGIA",       "",                      "canon",  ""],
-  [215,"HO_OH",       "",                      "canon",  ""],
-  [216,"MEWTWO",      "",                      "spg",    ""],
-  [217,"MEW",         "",                      "spg",    ""],
+  [138,"MIME_JR",     "",                      "canon",  ""],
+  [139,"MR__MIME",    "← MIME_JR / BALLERINE", "canon",  ""],
+  [140,"FARFETCH_D",  "",                      "canon",  ""],
+  [141,"MADAME",      "← FARFETCH_D",          "gs97r",  ""],
+  [142,"SIRFETCH_D",  "← FARFETCH_D",          "canon",  ""],
+  [143,"BLOTTLE",     "",                      "kep",    ""],
+  [144,"PENDRAKEN",   "← BLOTTLE",             "kep",    ""],
+  [145,"STARYU",      "",                      "spg",    ""],
+  [146,"STARMIE",     "← STARYU",              "spg",    ""],
+  [147,"REMORAID",    "",                      "gs97r",  ""],
+  [148,"OCTILLERY",   "← REMORAID",            "gs97r",  ""],
+  [149,"LICKITUNG",   "",                      "spg",    ""],
+  [150,"LICKILICKY",  "← LICKITUNG",           "canon",  ""],
+  [151,"LICKILORD",   "← LICKITUNG",           "gs97r",  ""],
+  [152,"TANGTRIP",    "",                      "gs97r",  ""],
+  [153,"TANGELA",     "← TANGTRIP",            "spg",    ""],
+  [154,"GELANIA",     "← TANGELA",             "gs97r",  ""],
+  [155,"TANGROWTH",   "← TANGELA",             "canon",  ""],
+  [156,"EEVEE",       "",                      "canon",  ""],
+  [157,"VAPOREON",    "← EEVEE",               "canon",  ""],
+  [158,"JOLTEON",     "← EEVEE",               "canon",  ""],
+  [159,"FLAREON",     "← EEVEE",               "canon",  ""],
+  [160,"ESPEON",      "← EEVEE",               "canon",  ""],
+  [161,"UMBREON",     "← EEVEE",               "canon",  ""],
+  [162,"LEAFEON",     "← EEVEE",               "canon",  ""],
+  [163,"GLACEON",     "← EEVEE",               "canon",  ""],
+  [164,"SYLVEON",     "← EEVEE",               "canon",  ""],
+  [165,"HORSEA",      "",                      "canon",  ""],
+  [166,"SEADRA",      "← HORSEA",              "canon",  ""],
+  [167,"KINGDRA",     "← SEADRA",              "gs97r",  ""],
+  [168,"DELIBIRD",    "",                      "gs97r",  ""],
+  [169,"KURSTRAW",    "",                      "gs97r",  ""],
+  [170,"PANGSHI",     "← KURSTRAW",            "gs97r",  ""],
+  [171,"QWILFISH",    "",                      "canon",  ""],
+  [172,"NUMBPUFF",    "← QWILFISH",            "gs97r",  ""],
+  [173,"RAYLEEP",     "",                      "gs97r",  ""],
+  [174,"CHIX",        "",                      "gs97r",  ""],
+  [175,"DODUO",       "← CHIX",                "canon",  ""],
+  [176,"DODRIO",      "← DODUO",               "canon",  ""],
+  [177,"PETICORN",    "",                      "gs97r",  ""],
+  [178,"PONYTA",      "← PETICORN",            "canon",  ""],
+  [179,"RAPIDASH",    "← PONYTA",              "canon",  ""],
+  [180,"CUBONE",      "",                      "canon",  ""],
+  [181,"MAROWAK",     "← CUBONE",              "canon",  ""],
+  [182,"GUARDIA",     "← MAROWAK",             "kep",    ""],
+  [183,"MURKROW",     "",                      "gs97r",  ""],
+  [184,"HONCHKROW",   "← MURKROW",             "canon",  ""],
+  [185,"WOLFAN",      "",                      "gs97r",  ""],
+  [186,"WARWOLF",     "← WOLFAN",              "gs97r",  ""],
+  [187,"SNEASEL",     "",                      "gs97r",  ""],
+  [188,"WEAVILE",     "← SNEASEL",             "canon",  ""],
+  [189,"SNEASLER",    "← SNEASEL",             "canon",  ""],
+  [190,"PORYGON",     "",                      "canon",  ""],
+  [191,"BETAGON",     "← PORYGON",             "gs97r",  ""],
+  [192,"PORYGON2",    "← PORYGON",             "canon",  ""],
+  [193,"PORYGON-Z",   "← PORYGON2",            "canon",  ""],
+  [194,"CHANSEY",     "",                      "canon",  ""],
+  [195,"BLISSEY",     "← CHANSEY",             "gs97r",  ""],
+  [196,"CHEEP",       "",                      "kep",    ""],
+  [197,"JABETTA",     "← CHEEP",               "kep",    ""],
+  [198,"RIBBITO",     "",                      "kep",    ""],
+  [199,"CROAKOZUNA",  "← RIBBITO",             "kep",    ""],
+  [200,"SQUIRTLE",    "",                      "canon",  ""],
+  [201,"WARTORTLE",   "← SQUIRTLE",            "canon",  ""],
+  [202,"TOTARTLE",    "← WARTORTLE",           "kep",    ""],
+  [203,"BLASTYKE",    "",                      "kep",    ""],
+  [204,"BLASTOISE",   "← BLASTYKE",            "canon",  ""],
+  [205,"GAVILLAIN",   "",                      "kep",    ""],
+  [206,"BALUMBA",     "",                      "kep",    ""],
+  [207,"SHARPOON",    "",                      "kep",    ""],
+  [208,"RAMOOSE",     "",                      "kep",    ""],
+  [209,"TRAMPEL",     "",                      "kep",    ""],
+  [210,"GORILLAIMO",  "",                      "kep",    ""],
+  [211,"CACTORMUS",   "",                      "kep",    ""],
+  [212,"BUU",         "",                      "kep",    ""],
+  [213,"OMEGADGE",    "",                      "kep",    ""],
+  [214,"SQUEAMATA",   "",                      "kep",    ""],
+  [215,"MINISTARE",   "← SQUEAMATA",           "kep",    ""],
+  [216,"IGUANARCH",   "← MINISTARE",           "kep",    ""],
+  [217,"DECILLA",     "",                      "kep",    ""],
+  [218,"GAWARHED",    "← DECILLA",             "kep",    ""],
+  [219,"ARTICUNO",    "",                      "spg",    ""],
+  [220,"ZAPDOS",      "",                      "spg",    ""],
+  [221,"MOLTRES",     "",                      "spg",    ""],
+  [222,"RAIKOU",      "",                      "gs97r",  ""],
+  [223,"ENTEI",       "",                      "gs97r",  ""],
+  [224,"SUICUNE",     "",                      "gs97r",  ""],
+  [225,"LUGIA",       "",                      "canon",  ""],
+  [226,"HO_OH",       "",                      "canon",  ""],
+  [227,"MEWTWO",      "",                      "spg",    ""],
+  [228,"MEW",         "",                      "spg",    ""],
 ];
 
 document.getElementById('total-count').textContent = DEX.length;
@@ -555,13 +772,12 @@ function buildGrid(data) {
   const grid = document.getElementById('grid-view');
   grid.innerHTML = '';
   data.forEach(([num, name, evo, source, notes]) => {
-    const urls = spriteUrl(name, source);
+    const urls = spriteUrl(name);
     const card = document.createElement('div');
     card.className = 'card';
     card.dataset.source = source;
     card.dataset.name = name.toLowerCase();
-
-    const hasResearch = notes.includes('⚠') || notes.includes('research');
+    card.dataset.num = num;
 
     card.innerHTML = `
       <div class="sprite-wrap">
@@ -573,6 +789,7 @@ function buildGrid(data) {
         <span class="name-badge ${getDotClass(source)}" title="${getSourceLabel(source)}"></span>
       </div>
     `;
+    card.addEventListener('click', () => openDetail(num));
     grid.appendChild(card);
     loadSprite(card.querySelector('.sprite-inner img'), urls);
   });
@@ -582,10 +799,11 @@ function buildTable(data) {
   const tbody = document.getElementById('table-body');
   tbody.innerHTML = '';
   data.forEach(([num, name, evo, source, notes]) => {
-    const urls = spriteUrl(name, source);
+    const urls = spriteUrl(name);
     const tr = document.createElement('tr');
     tr.dataset.source = source;
     tr.dataset.name = name.toLowerCase();
+    tr.dataset.num = num;
     tr.innerHTML = `
       <td style="color:var(--muted);font-size:0.8rem">#${String(num).padStart(3,'0')}</td>
       <td>
@@ -598,6 +816,8 @@ function buildTable(data) {
       <td><span class="tag ${getSourceClass(source)}">${getSourceLabel(source)}</span></td>
       <td style="color:var(--muted);font-size:0.8rem">${notes}</td>
     `;
+    tr.style.cursor = 'pointer';
+    tr.addEventListener('click', () => openDetail(num));
     tbody.appendChild(tr);
     loadSprite(tr.querySelector('.sprite-inner-table img'), urls);
   });
@@ -630,6 +850,312 @@ function setView(v) {
 // Initial render
 buildGrid(DEX);
 buildTable(DEX);
+
+// ── DETAIL MODAL ─────────────────────────────────────────────────────────
+
+const TYPE_COLORS = {
+  NORMAL:'#A8A878', FIGHTING:'#C03028', FLYING:'#A890F0',
+  POISON:'#A040A0', GROUND:'#C8A038', ROCK:'#B8A038',
+  BIRD:'#A890F0',   BUG:'#A8B820',     DRAGON:'#7038F8',
+  DARK:'#705848',   STEEL:'#B8B8D0',   FIRE:'#F08030',
+  WATER:'#6890F0',  GRASS:'#78C850',   ELECTRIC:'#D0A000',
+  PSYCHIC:'#F85888',ICE:'#98D8D8',     GHOST:'#705898',
+};
+
+const STAT_COLORS = {
+  hp:'#FF5959', atk:'#F5AC78', def:'#FAE078',
+  spd:'#FA92B2', satk:'#9DB7F5', sdef:'#A7DB8D',
+};
+
+
+let pokemonData = null;
+let currentDetailId = null;
+
+fetch('pokemon_data.json')
+  .then(r => r.json())
+  .then(data => { pokemonData = data; });
+
+function loadSpriteInto(img, name) {
+  const n = nameToKey(name);
+  loadSprite(img, ['sprites/' + n + '/front.png', 'sprites/' + n + '.png']);
+}
+
+function fmtMoveName(n) {
+  return n.replace(/_M$/, '').replace(/_/g,' ')
+    .toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function typeBadge(type, cls='type-badge') {
+  const color = TYPE_COLORS[type] || '#888';
+  return `<span class="${cls}" style="background:${color}">${type}</span>`;
+}
+
+function openDetail(pid) {
+  if (!pokemonData) return;
+  const p = pokemonData[String(pid)];
+  if (!p) return;
+  currentDetailId = pid;
+  document.getElementById('detail-prev').disabled = false;
+  document.getElementById('detail-next').disabled = false;
+
+  // header
+  const dexEntry = DEX.find(d => d[0] === pid);
+  document.getElementById('detail-num').textContent = '#' + String(pid).padStart(3,'0');
+  document.getElementById('detail-name').textContent = p.name.replace(/_/g,' ');
+
+  const species = p.dex && p.dex.species ? p.dex.species : '';
+  document.getElementById('detail-species').textContent = species ? species + ' Pokémon' : '';
+
+  const typesEl = document.getElementById('detail-types');
+  typesEl.innerHTML = p.types.map(t => typeBadge(t)).join('');
+
+  const mainImg = document.getElementById('detail-sprite');
+  loadSpriteInto(mainImg, p.name);
+
+  // evoline
+  buildEvoLine(p, pid);
+
+  // stats
+  buildStats(p.stats);
+
+  // dex text
+  document.getElementById('detail-dex-text').textContent =
+    p.dex && p.dex.text ? '"' + p.dex.text + '"' : '—';
+  if (p.dex && p.dex.height) {
+    const h = p.dex.height, w = p.dex.weight;
+    const ft = Math.floor(h/100), inch = Math.round((h % 100) * 0.393701);
+    document.getElementById('detail-dex-hw').textContent =
+      `Height: ${ft}'${inch.toString().padStart(2,'0')}"  Weight: ${(w/10).toFixed(1)} kg`;
+  } else {
+    document.getElementById('detail-dex-hw').textContent = '';
+  }
+
+  // moves
+  const tbody = document.getElementById('detail-moves');
+  tbody.innerHTML = '';
+  (p.moves || []).forEach(mv => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="move-level">${mv.level === 0 ? '—' : mv.level}</td>
+      <td class="move-name">${fmtMoveName(mv.move)}</td>
+      <td>${typeBadge(mv.type, 'move-type-badge')}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('detail-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function buildEvoEntry(pid, activePid) {
+  const pd = pokemonData[String(pid)];
+  if (!pd) return null;
+  const entry = document.createElement('div');
+  entry.className = 'evo-entry' + (pid === activePid ? ' active' : '');
+  entry.title = pd.name.replace(/_/g,' ');
+  entry.onclick = () => openDetail(pid);
+  const imgEl = document.createElement('img');
+  imgEl.width = 68; imgEl.height = 68;
+  const box = document.createElement('div');
+  box.className = 'evo-sprite-box';
+  box.appendChild(imgEl);
+  const nameDiv = document.createElement('div');
+  nameDiv.className = 'evo-name';
+  nameDiv.textContent = pd.name.replace(/_/g,' ');
+  entry.appendChild(box);
+  entry.appendChild(nameDiv);
+  loadSpriteInto(imgEl, pd.name);
+  return entry;
+}
+
+function makeArrow(label) {
+  const d = document.createElement('div');
+  d.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;align-self:center;min-width:72px;gap:2px';
+  d.innerHTML = `<span style="font-size:1.2rem;color:var(--muted)">→</span>`
+    + (label ? `<span style="font-size:0.62rem;color:var(--muted);white-space:nowrap;text-align:center">${label}</span>` : '');
+  return d;
+}
+
+function buildEvoLine(p, activePid) {
+  const el = document.getElementById('detail-evoline');
+  el.innerHTML = '';
+  const line = p.evoline || [activePid];
+  if (line.length <= 1) {
+    el.innerHTML = '<span style="color:var(--muted);font-size:0.8rem">No evolution</span>';
+    return;
+  }
+
+  // Build parent→children maps within this evoline (preserving evos order)
+  const lineSet = new Set(line);
+  const evoParents = {};   // pid → [parent pids]
+  const evoChildren = {};  // pid → [child pids, in evos order]
+  line.forEach(pid => {
+    const pd = pokemonData[String(pid)];
+    if (!pd || !pd.evos) return;
+    pd.evos.forEach(evo => {
+      if (!lineSet.has(evo.target)) return;
+      if (!evoParents[evo.target]) evoParents[evo.target] = [];
+      evoParents[evo.target].push(pid);
+      if (!evoChildren[pid]) evoChildren[pid] = [];
+      evoChildren[pid].push(evo.target);
+    });
+  });
+
+  // Depth per pid
+  const depth = {};
+  line.forEach(pid => {
+    let d = 0, cur = pid, seen = new Set();
+    while (evoParents[cur] && !seen.has(cur)) { seen.add(cur); cur = evoParents[cur][0]; d++; }
+    depth[pid] = d;
+  });
+  const maxDepth = Math.max(...Object.values(depth));
+  if (maxDepth === 0) { el.innerHTML = '<span style="color:var(--muted);font-size:0.8rem">No evolution</span>'; return; }
+
+  // Group by depth (line already in correct display order from JSON)
+  const byDepth = {};
+  line.forEach(pid => {
+    const d = depth[pid];
+    if (!byDepth[d]) byDepth[d] = [];
+    byDepth[d].push(pid);
+  });
+
+  for (let d = 0; d <= maxDepth; d++) {
+    const group = byDepth[d] || [];
+    const nextGroup = byDepth[d + 1] || [];
+
+    if (d === 0) {
+      if (group.length === 1) {
+        // Single root — just show sprite
+        el.appendChild(buildEvoEntry(group[0], activePid));
+      } else {
+        // Multiple roots (e.g. MIME_JR + BALLERINE) — stack vertically, each with own arrow to child
+        // Will be handled as part of the column structure below
+        const col = document.createElement('div');
+        col.style.cssText = 'display:flex;flex-direction:column;gap:6px;align-items:flex-end';
+        group.forEach(pid => col.appendChild(buildEvoEntry(pid, activePid)));
+        el.appendChild(col);
+      }
+    } else {
+      if (group._skip) continue;
+      if (group.length === 1 && (byDepth[d-1]||[]).length === 1) {
+        // Linear: single arrow + single sprite
+        const parentPid = (evoParents[group[0]] || [])[0];
+        el.appendChild(makeArrow(getEvoMethod(parentPid, group[0])));
+        el.appendChild(buildEvoEntry(group[0], activePid));
+      } else if (group.length > 1) {
+        // Branching: one parent → many children — column of [arrow+label + sprite] rows
+        // If a child has a single linear continuation, inline it in the same row
+        const col = document.createElement('div');
+        col.style.cssText = 'display:flex;flex-direction:column;gap:6px;align-self:center';
+        const skipDepths = new Set();
+        group.forEach(pid => {
+          const parentPid = (evoParents[pid] || [])[0];
+          const row = document.createElement('div');
+          row.style.cssText = 'display:flex;align-items:center;gap:4px';
+          row.appendChild(makeArrow(getEvoMethod(parentPid, pid)));
+          row.appendChild(buildEvoEntry(pid, activePid));
+          // Follow any single linear chain from this child
+          let cur = pid;
+          while ((evoChildren[cur] || []).length === 1) {
+            const nextPid = evoChildren[cur][0];
+            if ((evoParents[nextPid] || []).length !== 1) break;
+            row.appendChild(makeArrow(getEvoMethod(cur, nextPid)));
+            row.appendChild(buildEvoEntry(nextPid, activePid));
+            skipDepths.add(depth[nextPid]);
+            cur = nextPid;
+          }
+          col.appendChild(row);
+        });
+        el.appendChild(col);
+        skipDepths.forEach(sd => { if (byDepth[sd]) byDepth[sd]._skip = true; });
+      } else {
+        // Single child, multiple parents (convergent) — parents already rendered with own arrows
+        // Just show shared arrow + sprite
+        const parentPid = (evoParents[group[0]] || [])[0];
+        el.appendChild(makeArrow(getEvoMethod(parentPid, group[0])));
+        el.appendChild(buildEvoEntry(group[0], activePid));
+      }
+    }
+
+    // After rendering depth-0 multi-root, inject individual arrows pointing to their shared child
+    if (d === 0 && group.length > 1 && nextGroup.length === 1) {
+      const childPid = nextGroup[0];
+      const col = document.createElement('div');
+      col.style.cssText = 'display:flex;flex-direction:column;gap:6px;align-self:center;align-items:center';
+      group.forEach(pid => col.appendChild(makeArrow(getEvoMethod(pid, childPid))));
+      el.appendChild(col);
+      // Render the convergent child directly here and mark depth 1 as done
+      el.appendChild(buildEvoEntry(childPid, activePid));
+      byDepth[1] = byDepth[1] || [];
+      byDepth[1]._skip = true;
+    }
+  }
+}
+
+
+function getEvoMethod(fromPid, toPid) {
+  const pd = pokemonData[String(fromPid)];
+  if (!pd || !pd.evos) return '';
+  const evo = pd.evos.find(e => e.target === toPid);
+  if (!evo) return '';
+  const m = evo.method, p = evo.param || '';
+  if (m === 'EVOLVE_LEVEL') return 'Lv.' + p;
+  if (m === 'EVOLVE_ITEM') return p.replace(/_/g,' ').toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());
+  if (m === 'EVOLVE_TRADE') return p && p !== '-1' ? 'Trade\n(' + p.replace(/_/g,' ') + ')' : 'Trade';
+  if (m === 'EVOLVE_HAPPINESS') return 'Happiness';
+  if (m === 'EVOLVE_STAT') return 'Lv.' + p + '\n(Stat)';
+  return '';
+}
+
+function buildStats(stats) {
+  const el = document.getElementById('detail-stats');
+  const keys = ['hp','atk','def','spd','satk','sdef'];
+  const labels = ['HP','ATK','DEF','SPD','SpA','SpD'];
+  const MAX_STAT = 200;
+  let html = '';
+  keys.forEach((k, i) => {
+    const val = stats[k] || 0;
+    const pct = Math.min(100, Math.round(val / MAX_STAT * 100));
+    const color = STAT_COLORS[k];
+    html += `
+      <div class="stat-row">
+        <div class="stat-label">${labels[i]}</div>
+        <div class="stat-val">${val}</div>
+        <div class="stat-bar-bg"><div class="stat-bar" style="width:${pct}%;background:${color}"></div></div>
+      </div>`;
+  });
+  html += `<div class="stat-total-row"><span>Total</span><span class="stat-total-val">${stats.total}</span></div>`;
+  el.innerHTML = html;
+}
+
+function navigateDex(dir) {
+  const ids = DEX.map(d => d[0]);
+  const idx = ids.indexOf(currentDetailId);
+  if (idx === -1) return;
+  const nextIdx = (idx + dir + ids.length) % ids.length;
+  openDetail(ids[nextIdx]);
+}
+
+function closeDetail() {
+  const pid = currentDetailId;
+  document.getElementById('detail-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  currentDetailId = null;
+  if (pid != null) {
+    const el = document.querySelector(`[data-num="${pid}"]`);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function closeDetailIfOutside(e) {
+  if (e.target === document.getElementById('detail-overlay')) closeDetail();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeDetail();
+  else if (e.key === 'ArrowLeft'  && currentDetailId) navigateDex(-1);
+  else if (e.key === 'ArrowRight' && currentDetailId) navigateDex(1);
+});
 </script>
 </body>
 </html>
