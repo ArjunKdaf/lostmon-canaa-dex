@@ -183,12 +183,12 @@
     width: 40px; height: 40px; image-rendering: pixelated;
   }
   .card .name-bar {
-    position: absolute; bottom: 0; left: 0;
-    display: inline-flex; align-items: center; gap: 4px;
-    background: rgba(0,0,0,0.62); padding: 3px 8px;
-    /* bottom-left matches card corner; top-right curves inward to match pokeball shape */
-    border-radius: 0 10px 0 12px;
-    max-width: 90%; overflow: hidden;
+    position: absolute; bottom: 0; left: 0; right: 0;
+    display: flex; align-items: center; gap: 4px;
+    background: rgba(0,0,0,0.72); padding: 2px 5px;
+    /* bottom corners match the card's own border-radius exactly */
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
     z-index: 3;
   }
   .card .num {
