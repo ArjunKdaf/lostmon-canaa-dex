@@ -102,7 +102,12 @@
   @media (max-width: 1300px) { #grid-view { grid-template-columns: repeat(5, 1fr); } }
   @media (max-width: 1050px) { #grid-view { grid-template-columns: repeat(4, 1fr); } }
   @media (max-width: 800px)  { #grid-view { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 560px)  { #grid-view { grid-template-columns: repeat(2, 1fr); padding: 12px 16px; } }
+  @media (max-width: 560px)  {
+    #grid-view { grid-template-columns: repeat(2, 1fr); padding: 12px 16px; }
+    /* On mobile the card is smaller so the 2px border gap becomes visible.
+       Extend the bar by the border width so it sits flush with the card edge. */
+    .card .name-bar { bottom: -2px; }
+  }
   @media (max-width: 360px)  { #grid-view { grid-template-columns: repeat(1, 1fr); } }
   @media (max-width: 480px) {
     .controls { padding: 8px 12px; gap: 6px; flex-wrap: wrap; }
