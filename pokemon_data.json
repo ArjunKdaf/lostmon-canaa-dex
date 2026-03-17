@@ -2520,7 +2520,63 @@
         "target_name": "CROBAT"
       }
     ],
-    "moves": []
+    "moves": [
+      {
+        "level": 1,
+        "move": "LEECH_LIFE",
+        "type": "BUG"
+      },
+      {
+        "level": 5,
+        "move": "SUPERSONIC",
+        "type": "NORMAL"
+      },
+      {
+        "level": 8,
+        "move": "BITE",
+        "type": "DARK"
+      },
+      {
+        "level": 12,
+        "move": "GUST",
+        "type": "FLYING"
+      },
+      {
+        "level": 15,
+        "move": "CONFUSE_RAY",
+        "type": "GHOST"
+      },
+      {
+        "level": 19,
+        "move": "SWIFT",
+        "type": "NORMAL"
+      },
+      {
+        "level": 22,
+        "move": "HAZE",
+        "type": "ICE"
+      },
+      {
+        "level": 26,
+        "move": "WING_ATTACK",
+        "type": "FLYING"
+      },
+      {
+        "level": 29,
+        "move": "CRUNCH",
+        "type": "DARK"
+      },
+      {
+        "level": 33,
+        "move": "MEAN_LOOK",
+        "type": "NORMAL"
+      },
+      {
+        "level": 36,
+        "move": "TOXIC",
+        "type": "POISON"
+      }
+    ]
   },
   "31": {
     "name": "CROBAT",
@@ -2645,6 +2701,36 @@
       32,
       33,
       34
+    ],
+    "moves": [
+      {
+        "level": 1,
+        "move": "PECK"
+      },
+      {
+        "level": 1,
+        "move": "LEER"
+      },
+      {
+        "level": 10,
+        "move": "FURY_ATTACK"
+      },
+      {
+        "level": 15,
+        "move": "SCARY_FACE"
+      },
+      {
+        "level": 20,
+        "move": "DRILL_PECK"
+      },
+      {
+        "level": 25,
+        "move": "SWAGGER"
+      },
+      {
+        "level": 30,
+        "move": "SKY_ATTACK"
+      }
     ]
   },
   "33": {
@@ -2679,6 +2765,36 @@
       32,
       33,
       34
+    ],
+    "moves": [
+      {
+        "level": 1,
+        "move": "PECK"
+      },
+      {
+        "level": 1,
+        "move": "LEER"
+      },
+      {
+        "level": 10,
+        "move": "FURY_ATTACK"
+      },
+      {
+        "level": 15,
+        "move": "SCARY_FACE"
+      },
+      {
+        "level": 22,
+        "move": "DRILL_PECK"
+      },
+      {
+        "level": 29,
+        "move": "SWAGGER"
+      },
+      {
+        "level": 36,
+        "move": "SKY_ATTACK"
+      }
     ]
   },
   "34": {
@@ -2707,6 +2823,48 @@
       32,
       33,
       34
+    ],
+    "moves": [
+      {
+        "level": 1,
+        "move": "SCREECH"
+      },
+      {
+        "level": 1,
+        "move": "PECK"
+      },
+      {
+        "level": 1,
+        "move": "LEER"
+      },
+      {
+        "level": 10,
+        "move": "FURY_ATTACK"
+      },
+      {
+        "level": 15,
+        "move": "SCARY_FACE"
+      },
+      {
+        "level": 22,
+        "move": "DRILL_PECK"
+      },
+      {
+        "level": 29,
+        "move": "STEEL_WING"
+      },
+      {
+        "level": 36,
+        "move": "SWAGGER"
+      },
+      {
+        "level": 45,
+        "move": "SKY_ATTACK"
+      },
+      {
+        "level": 54,
+        "move": "DEFENSE_CURL"
+      }
     ]
   },
   "35": {
@@ -3737,7 +3895,68 @@
         "target_name": "GENGAR"
       }
     ],
-    "moves": []
+    "moves": [
+      {
+        "level": 1,
+        "move": "HYPNOSIS",
+        "type": "PSYCHIC"
+      },
+      {
+        "level": 1,
+        "move": "LICK",
+        "type": "GHOST"
+      },
+      {
+        "level": 4,
+        "move": "SMOG",
+        "type": "POISON"
+      },
+      {
+        "level": 8,
+        "move": "SPITE",
+        "type": "GHOST"
+      },
+      {
+        "level": 12,
+        "move": "MEAN_LOOK",
+        "type": "NORMAL"
+      },
+      {
+        "level": 16,
+        "move": "CURSE",
+        "type": "CURSE_T"
+      },
+      {
+        "level": 20,
+        "move": "NIGHT_SHADE",
+        "type": "GHOST"
+      },
+      {
+        "level": 24,
+        "move": "POISON_GAS",
+        "type": "POISON"
+      },
+      {
+        "level": 29,
+        "move": "CONFUSE_RAY",
+        "type": "GHOST"
+      },
+      {
+        "level": 35,
+        "move": "SHADOW_BALL",
+        "type": "GHOST"
+      },
+      {
+        "level": 41,
+        "move": "DREAM_EATER",
+        "type": "PSYCHIC"
+      },
+      {
+        "level": 48,
+        "move": "DESTINY_BOND",
+        "type": "GHOST"
+      }
+    ]
   },
   "49": {
     "name": "GENGAR",
@@ -5549,7 +5768,13 @@
         "target_name": "ALAKAZAM"
       }
     ],
-    "moves": []
+    "moves": [
+      {
+        "level": 1,
+        "move": "TELEPORT",
+        "type": "PSYCHIC"
+      }
+    ]
   },
   "72": {
     "name": "ALAKAZAM",
@@ -5924,7 +6149,13 @@
         "target_name": "METTO"
       }
     ],
-    "moves": []
+    "moves": [
+      {
+        "level": 1,
+        "move": "TRANSFORM",
+        "type": "NORMAL"
+      }
+    ]
   },
   "77": {
     "name": "METTO",
@@ -9646,6 +9877,56 @@
       119,
       120,
       121
+    ],
+    "moves": [
+      {
+        "level": 1,
+        "move": "PECK"
+      },
+      {
+        "level": 1,
+        "move": "TAIL_WHIP"
+      },
+      {
+        "level": 5,
+        "move": "SUPERSONIC"
+      },
+      {
+        "level": 10,
+        "move": "WATER_GUN"
+      },
+      {
+        "level": 15,
+        "move": "FURY_ATTACK"
+      },
+      {
+        "level": 20,
+        "move": "FLAIL"
+      },
+      {
+        "level": 25,
+        "move": "HORN_ATTACK"
+      },
+      {
+        "level": 30,
+        "move": "WATERFALL"
+      },
+      {
+        "level": 35,
+        "move": "AGILITY"
+      },
+      {
+        "level": 40,
+        "move": "MEGAHORN"
+      },
+      {
+        "level": 45,
+        "move": "CRUNCH"
+      },
+      {
+        "level": 50,
+        "move": "HORN_DRILL"
+      }
     ]
   },
   "121": {
@@ -9673,6 +9954,68 @@
       119,
       120,
       121
+    ],
+    "moves": [
+      {
+        "level": 1,
+        "move": "PECK"
+      },
+      {
+        "level": 1,
+        "move": "TAIL_WHIP"
+      },
+      {
+        "level": 1,
+        "move": "SUPERSONIC"
+      },
+      {
+        "level": 1,
+        "move": "WATER_GUN"
+      },
+      {
+        "level": 10,
+        "move": "FURY_ATTACK"
+      },
+      {
+        "level": 15,
+        "move": "FLAIL"
+      },
+      {
+        "level": 20,
+        "move": "HORN_ATTACK"
+      },
+      {
+        "level": 25,
+        "move": "WATERFALL"
+      },
+      {
+        "level": 30,
+        "move": "AGILITY"
+      },
+      {
+        "level": 35,
+        "move": "DRILL_PECK"
+      },
+      {
+        "level": 40,
+        "move": "MEGAHORN"
+      },
+      {
+        "level": 45,
+        "move": "CRUNCH"
+      },
+      {
+        "level": 50,
+        "move": "SWORDS_DANCE"
+      },
+      {
+        "level": 55,
+        "move": "HORN_DRILL"
+      },
+      {
+        "level": 60,
+        "move": "HYPER_BEAM"
+      }
     ]
   },
   "122": {
@@ -9707,6 +10050,44 @@
     "evoline": [
       122,
       123
+    ],
+    "moves": [
+      {
+        "level": 1,
+        "move": "TACKLE"
+      },
+      {
+        "level": 1,
+        "move": "GROWL"
+      },
+      {
+        "level": 4,
+        "move": "BUBBLE"
+      },
+      {
+        "level": 8,
+        "move": "DEFENSE_CURL"
+      },
+      {
+        "level": 12,
+        "move": "RAGE"
+      },
+      {
+        "level": 16,
+        "move": "SUPERSONIC"
+      },
+      {
+        "level": 20,
+        "move": "BUBBLEBEAM"
+      },
+      {
+        "level": 24,
+        "move": "SCREECH"
+      },
+      {
+        "level": 28,
+        "move": "IRON_TAIL"
+      }
     ]
   },
   "123": {
@@ -12594,7 +12975,63 @@
         "target_name": "LICKILORD"
       }
     ],
-    "moves": []
+    "moves": [
+      {
+        "level": 1,
+        "move": "LICK",
+        "type": "GHOST"
+      },
+      {
+        "level": 6,
+        "move": "DEFENSE_CURL",
+        "type": "NORMAL"
+      },
+      {
+        "level": 10,
+        "move": "SUPERSONIC",
+        "type": "NORMAL"
+      },
+      {
+        "level": 15,
+        "move": "WRAP",
+        "type": "NORMAL"
+      },
+      {
+        "level": 19,
+        "move": "STOMP",
+        "type": "NORMAL"
+      },
+      {
+        "level": 24,
+        "move": "DISABLE",
+        "type": "NORMAL"
+      },
+      {
+        "level": 28,
+        "move": "SLAM",
+        "type": "NORMAL"
+      },
+      {
+        "level": 33,
+        "move": "ROLLOUT",
+        "type": "ROCK"
+      },
+      {
+        "level": 37,
+        "move": "SCREECH",
+        "type": "NORMAL"
+      },
+      {
+        "level": 42,
+        "move": "THRASH",
+        "type": "NORMAL"
+      },
+      {
+        "level": 46,
+        "move": "AMNESIA",
+        "type": "PSYCHIC"
+      }
+    ]
   },
   "155": {
     "name": "LICKILICKY",
@@ -14178,7 +14615,68 @@
         "target_name": "KINGDRA"
       }
     ],
-    "moves": []
+    "moves": [
+      {
+        "level": 1,
+        "move": "BUBBLE",
+        "type": "WATER"
+      },
+      {
+        "level": 1,
+        "move": "LEER",
+        "type": "NORMAL"
+      },
+      {
+        "level": 7,
+        "move": "SMOKESCREEN",
+        "type": "NORMAL"
+      },
+      {
+        "level": 10,
+        "move": "WATER_GUN",
+        "type": "WATER"
+      },
+      {
+        "level": 16,
+        "move": "TWISTER",
+        "type": "DRAGON"
+      },
+      {
+        "level": 19,
+        "move": "FOCUS_ENERGY",
+        "type": "NORMAL"
+      },
+      {
+        "level": 25,
+        "move": "BUBBLEBEAM",
+        "type": "WATER"
+      },
+      {
+        "level": 28,
+        "move": "DRAGONBREATH",
+        "type": "DRAGON"
+      },
+      {
+        "level": 34,
+        "move": "AGILITY",
+        "type": "PSYCHIC"
+      },
+      {
+        "level": 37,
+        "move": "DRAGON_RAGE",
+        "type": "DRAGON"
+      },
+      {
+        "level": 43,
+        "move": "HYDRO_PUMP",
+        "type": "WATER"
+      },
+      {
+        "level": 46,
+        "move": "RAIN_DANCE",
+        "type": "WATER"
+      }
+    ]
   },
   "172": {
     "name": "KINGDRA",
@@ -16231,6 +16729,40 @@
     "evoline": [
       194,
       195
+    ],
+    "moves": [
+      {
+        "level": 1,
+        "move": "BITE"
+      },
+      {
+        "level": 1,
+        "move": "LEER"
+      },
+      {
+        "level": 8,
+        "move": "ROCK_THROW"
+      },
+      {
+        "level": 15,
+        "move": "SCARY_FACE"
+      },
+      {
+        "level": 22,
+        "move": "ANCIENTPOWER"
+      },
+      {
+        "level": 29,
+        "move": "ROCK_SLIDE"
+      },
+      {
+        "level": 36,
+        "move": "AGILITY"
+      },
+      {
+        "level": 40,
+        "move": "CRUNCH"
+      }
     ]
   },
   "195": {
@@ -16258,6 +16790,48 @@
     "evoline": [
       194,
       195
+    ],
+    "moves": [
+      {
+        "level": 1,
+        "move": "BITE"
+      },
+      {
+        "level": 1,
+        "move": "LEER"
+      },
+      {
+        "level": 1,
+        "move": "WING_ATTACK"
+      },
+      {
+        "level": 8,
+        "move": "ROCK_THROW"
+      },
+      {
+        "level": 15,
+        "move": "SCARY_FACE"
+      },
+      {
+        "level": 22,
+        "move": "ANCIENTPOWER"
+      },
+      {
+        "level": 29,
+        "move": "ROCK_SLIDE"
+      },
+      {
+        "level": 36,
+        "move": "AGILITY"
+      },
+      {
+        "level": 43,
+        "move": "CRUNCH"
+      },
+      {
+        "level": 50,
+        "move": "HYPER_BEAM"
+      }
     ]
   },
   "196": {
@@ -16284,6 +16858,52 @@
     "evos": [],
     "evoline": [
       196
+    ],
+    "moves": [
+      {
+        "level": 1,
+        "move": "BITE"
+      },
+      {
+        "level": 1,
+        "move": "LEER"
+      },
+      {
+        "level": 1,
+        "move": "SHADOW_BALL"
+      },
+      {
+        "level": 8,
+        "move": "ROCK_THROW"
+      },
+      {
+        "level": 15,
+        "move": "SCARY_FACE"
+      },
+      {
+        "level": 22,
+        "move": "ANCIENTPOWER"
+      },
+      {
+        "level": 29,
+        "move": "ROCK_SLIDE"
+      },
+      {
+        "level": 36,
+        "move": "CURSE"
+      },
+      {
+        "level": 43,
+        "move": "CRUNCH"
+      },
+      {
+        "level": 50,
+        "move": "PERISH_SONG"
+      },
+      {
+        "level": 57,
+        "move": "HYPER_BEAM"
+      }
     ]
   },
   "197": {
@@ -16589,7 +17209,53 @@
     "evoline": [
       200
     ],
-    "evos": []
+    "evos": [],
+    "moves": [
+      {
+        "level": 1,
+        "move": "TACKLE"
+      },
+      {
+        "level": 1,
+        "move": "DEFENSE_CURL"
+      },
+      {
+        "level": 1,
+        "move": "CONVERSION"
+      },
+      {
+        "level": 9,
+        "move": "THUNDERSHOCK"
+      },
+      {
+        "level": 12,
+        "move": "PSYBEAM"
+      },
+      {
+        "level": 20,
+        "move": "CONVERSION2"
+      },
+      {
+        "level": 24,
+        "move": "AGILITY"
+      },
+      {
+        "level": 32,
+        "move": "RECOVER"
+      },
+      {
+        "level": 36,
+        "move": "TRI_ATTACK"
+      },
+      {
+        "level": 44,
+        "move": "LOCK_ON"
+      },
+      {
+        "level": 48,
+        "move": "ZAP_CANNON"
+      }
+    ]
   },
   "201": {
     "name": "HAPPINY",
@@ -16690,7 +17356,63 @@
         "target_name": "BLISSEY"
       }
     ],
-    "moves": []
+    "moves": [
+      {
+        "level": 1,
+        "move": "POUND",
+        "type": "NORMAL"
+      },
+      {
+        "level": 4,
+        "move": "GROWL",
+        "type": "NORMAL"
+      },
+      {
+        "level": 7,
+        "move": "TAIL_WHIP",
+        "type": "NORMAL"
+      },
+      {
+        "level": 10,
+        "move": "DEFENSE_CURL",
+        "type": "NORMAL"
+      },
+      {
+        "level": 13,
+        "move": "DOUBLESLAP",
+        "type": "NORMAL"
+      },
+      {
+        "level": 18,
+        "move": "SING",
+        "type": "NORMAL"
+      },
+      {
+        "level": 23,
+        "move": "MINIMIZE",
+        "type": "NORMAL"
+      },
+      {
+        "level": 28,
+        "move": "EGG_BOMB",
+        "type": "NORMAL"
+      },
+      {
+        "level": 33,
+        "move": "SOFTBOILED",
+        "type": "NORMAL"
+      },
+      {
+        "level": 40,
+        "move": "LIGHT_SCREEN",
+        "type": "PSYCHIC"
+      },
+      {
+        "level": 47,
+        "move": "DOUBLE_EDGE",
+        "type": "NORMAL"
+      }
+    ]
   },
   "203": {
     "name": "BLISSEY",
@@ -17336,6 +18058,60 @@
     "evoline": [
       211,
       212
+    ],
+    "moves": [
+      {
+        "level": 1,
+        "move": "SCREECH"
+      },
+      {
+        "level": 1,
+        "move": "SUPERSONIC"
+      },
+      {
+        "level": 1,
+        "move": "TACKLE"
+      },
+      {
+        "level": 6,
+        "move": "ABSORB"
+      },
+      {
+        "level": 11,
+        "move": "GUST"
+      },
+      {
+        "level": 15,
+        "move": "BITE"
+      },
+      {
+        "level": 20,
+        "move": "WING_ATTACK"
+      },
+      {
+        "level": 25,
+        "move": "TRI_ATTACK"
+      },
+      {
+        "level": 29,
+        "move": "REST"
+      },
+      {
+        "level": 34,
+        "move": "CRUNCH"
+      },
+      {
+        "level": 40,
+        "move": "WING_ATTACK"
+      },
+      {
+        "level": 46,
+        "move": "AGILITY"
+      },
+      {
+        "level": 52,
+        "move": "AEROBLAST"
+      }
     ]
   },
   "212": {
@@ -17363,6 +18139,64 @@
     "evoline": [
       211,
       212
+    ],
+    "moves": [
+      {
+        "level": 1,
+        "move": "DRAGONBREATH"
+      },
+      {
+        "level": 1,
+        "move": "SCREECH"
+      },
+      {
+        "level": 1,
+        "move": "SUPERSONIC"
+      },
+      {
+        "level": 1,
+        "move": "TACKLE"
+      },
+      {
+        "level": 6,
+        "move": "ABSORB"
+      },
+      {
+        "level": 11,
+        "move": "GUST"
+      },
+      {
+        "level": 15,
+        "move": "BITE"
+      },
+      {
+        "level": 20,
+        "move": "WING_ATTACK"
+      },
+      {
+        "level": 25,
+        "move": "TRI_ATTACK"
+      },
+      {
+        "level": 29,
+        "move": "REST"
+      },
+      {
+        "level": 34,
+        "move": "CRUNCH"
+      },
+      {
+        "level": 40,
+        "move": "WING_ATTACK"
+      },
+      {
+        "level": 48,
+        "move": "AGILITY"
+      },
+      {
+        "level": 55,
+        "move": "AEROBLAST"
+      }
     ]
   },
   "213": {
@@ -19539,6 +20373,40 @@
     "evos": [],
     "evoline": [
       240
+    ],
+    "moves": [
+      {
+        "level": 1,
+        "move": "WATER_GUN"
+      },
+      {
+        "level": 1,
+        "move": "SKY_ATTACK"
+      },
+      {
+        "level": 1,
+        "move": "PAY_DAY"
+      },
+      {
+        "level": 10,
+        "move": "TRI_ATTACK"
+      },
+      {
+        "level": 20,
+        "move": "PSYBEAM"
+      },
+      {
+        "level": 30,
+        "move": "SUBSTITUTE"
+      },
+      {
+        "level": 40,
+        "move": "PSYCHIC_M"
+      },
+      {
+        "level": 50,
+        "move": "HYPER_BEAM"
+      }
     ]
   }
 }
