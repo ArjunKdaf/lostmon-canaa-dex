@@ -20558,13 +20558,13 @@
       "ELECTRIC"
     ],
     "stats": {
-      "hp": 50,
-      "atk": 63,
-      "def": 37,
-      "spd": 100,
-      "satk": 65,
-      "sdef": 55,
-      "total": 370
+      "hp": 55,
+      "atk": 75,
+      "def": 47,
+      "spd": 105,
+      "satk": 75,
+      "sdef": 63,
+      "total": 420
     },
     "dex": {
       "species": "ELECTRIC",
